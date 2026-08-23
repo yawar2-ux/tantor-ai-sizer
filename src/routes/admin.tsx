@@ -114,7 +114,6 @@ function Admin() {
               ? "Your account does not hold the admin role. Ask an existing admin to grant it."
               : "Sign in with an admin account to edit the rate card and manage roles."}
           </p>
-          {signedIn && <RoleAdmin bootstrapOnly />}
         </section>
       ) : (
         <>
@@ -246,13 +245,12 @@ function Commercials() {
   );
 }
 
-function RoleAdmin({ bootstrapOnly = false }: { bootstrapOnly?: boolean }) {
+function RoleAdmin() {
   const list = useServerFn(listTeamRoles);
   const grant = useServerFn(grantRole);
   const revoke = useServerFn(revokeRole);
 
   const [rows, setRows] = useState<TeamRoleRow[]>([]);
-  const [anyAdmin, setAnyAdmin] = useState(true);
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<AppRole>("presales");
   const [msg, setMsg] = useState<string | null>(null);
@@ -262,7 +260,6 @@ function RoleAdmin({ bootstrapOnly = false }: { bootstrapOnly?: boolean }) {
     list()
       .then((r) => {
         setRows(r.rows);
-        setAnyAdmin(r.anyAdmin);
         setMsg(null);
       })
       .catch((e: Error) => setMsg(e.message));
@@ -271,8 +268,6 @@ function RoleAdmin({ bootstrapOnly = false }: { bootstrapOnly?: boolean }) {
     void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (bootstrapOnly && anyAdmin) return null;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -290,12 +285,10 @@ function RoleAdmin({ bootstrapOnly = false }: { bootstrapOnly?: boolean }) {
   };
 
   return (
-    <section className={bootstrapOnly ? "mt-4" : "card-surface p-5"}>
-      <h2 className="mb-1 text-lg font-semibold">{bootstrapOnly ? "Claim the first admin seat" : "Roles"}</h2>
+    <section className="card-surface p-5">
+      <h2 className="mb-1 text-lg font-semibold">Roles</h2>
       <p className="mb-4 text-xs text-muted-foreground">
-        {bootstrapOnly
-          ? "No admin exists yet, so any signed-in account can take the first seat."
-          : "Presales gets everything except admin. Sales sees Results and exports only. Admin sees everything."}
+        Presales gets everything except admin. Sales sees Results and exports only. Admin sees everything.
       </p>
       <form onSubmit={submit} className="flex flex-wrap items-end gap-3">
         <label className="text-xs text-muted-foreground">
@@ -327,7 +320,7 @@ function RoleAdmin({ bootstrapOnly = false }: { bootstrapOnly?: boolean }) {
       </form>
       {msg && <p className="mt-3 text-sm text-rose">{msg}</p>}
 
-      {!bootstrapOnly && (
+      {(
         <table className="mt-4 w-full">
           <thead>
             <tr className="border-b border-border">
