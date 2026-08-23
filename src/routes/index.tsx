@@ -1,8 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useScenario } from "@/state/scenario";
-import { inrLakh, num } from "@/lib/format";
-import { PROVIDER_LABEL, RATES } from "@/engine";
+import { useAuth } from "@/hooks/useAuth";
+import { listScenarios, scenarioTitle, type SavedScenario } from "@/lib/scenarios";
+import { defaultScenario } from "@/engine";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -11,7 +13,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Size Tantor on-premise governed AI deployments: GPUs, nodes, storage and three-year TCO in INR, compared with AWS, Azure, GCP and OCI.",
+          "Start a new Tantor sizing or open a saved scenario: GPUs, nodes, storage and three-year TCO in INR, compared with AWS, Azure, GCP and OCI.",
       },
       { property: "og:title", content: "Tantor Gen AI Sizer" },
       {
@@ -31,9 +33,54 @@ const steps = [
   { to: "/results", n: 5, title: "Results", text: "Bill of quantities, on-premise TCO and cloud comparison." },
 ];
 
+const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+
 function Home() {
-  const { result } = useScenario();
-  const { sizing, environments, cost, cloud } = result;
+  const { scenario, update, reset } = useScenario();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [recent, setRecent] = useState<SavedScenario[]>([]);
+  const [loadingRecent, setLoadingRecent] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!user) {
+      setRecent([]);
+      setLoadingRecent(false);
+      return;
+    }
+    setLoadingRecent(true);
+    listScenarios()
+      .then((rows) => {
+        if (!cancelled) setRecent(rows.slice(0, 5));
+      })
+      .catch(() => {
+        if (!cancelled) setRecent([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingRecent(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  const startNew = () => {
+    const dirty = JSON.stringify(scenario) !== JSON.stringify(defaultScenario());
+    if (dirty && typeof window !== "undefined") {
+      const ok = window.confirm(
+        "The current working sizing has unsaved changes. Starting a new sizing will discard them. Continue?",
+      );
+      if (!ok) return;
+    }
+    reset();
+    void navigate({ to: "/workload" });
+  };
+
+  const openSaved = (row: SavedScenario) => {
+    update(row.data);
+    void navigate({ to: "/results" });
+  };
 
   return (
     <div className="space-y-8">
@@ -43,28 +90,63 @@ function Home() {
         intro="Size a Tantor on-premise governed AI deployment from business use cases, then compare the three-year cost against AWS, Azure, GCP and OCI. Every figure is in Indian rupees."
       />
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <div className="card-surface p-5">
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">Current scenario</div>
-          <div className="numeral mt-2 text-3xl font-semibold text-rose">{num(sizing.prodGpus)} GPUs</div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Production, binding constraint {sizing.constraint.toLowerCase()}.
-          </p>
+      <section className="grid gap-4 md:grid-cols-2">
+        <div className="card-surface flex flex-col justify-between gap-4 p-6">
+          <div>
+            <h2 className="font-heading text-xl font-semibold text-brand">Create new sizing</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Start from a blank workload and work through the five steps.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={startNew}
+            className="inline-flex w-fit items-center rounded-md bg-rose px-4 py-2 text-sm font-semibold text-rose-foreground transition-opacity hover:opacity-90"
+          >
+            Start a new sizing
+          </button>
         </div>
-        <div className="card-surface p-5">
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">On-premise 3-year TCO</div>
-          <div className="numeral mt-2 text-3xl font-semibold text-rose">{inrLakh(cost.tco3L)}</div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {num(environments.totalNodes)} nodes across all environments.
-          </p>
+
+        <div className="card-surface flex flex-col justify-between gap-4 p-6">
+          <div>
+            <h2 className="font-heading text-xl font-semibold text-brand">Load existing sizing</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Open a saved scenario to review, revise or compare.
+            </p>
+          </div>
+          <Link
+            to="/scenarios"
+            className="inline-flex w-fit items-center rounded-md border border-brand px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-foreground"
+          >
+            Browse saved scenarios
+          </Link>
         </div>
-        <div className="card-surface p-5">
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">Best cloud alternative</div>
-          <div className="numeral mt-2 text-3xl font-semibold text-info">{inrLakh(cloud.bestTco3L)}</div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {PROVIDER_LABEL[cloud.bestProvider]}, list rates converted at {RATES.fx} INR per USD.
-          </p>
-        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">Recent scenarios</h2>
+        {loadingRecent ? (
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        ) : recent.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No saved scenarios yet</p>
+        ) : (
+          <ul className="card-surface divide-y divide-border">
+            {recent.map((row) => (
+              <li key={row.id}>
+                <button
+                  type="button"
+                  onClick={() => openSaved(row)}
+                  className="flex w-full flex-wrap items-center justify-between gap-2 px-5 py-3 text-left transition-colors hover:bg-accent"
+                >
+                  <span className="font-heading text-sm font-semibold text-brand">{scenarioTitle(row)}</span>
+                  <span className="numeral text-xs text-muted-foreground">
+                    Updated {dateFmt.format(new Date(row.updated_at))}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section>
