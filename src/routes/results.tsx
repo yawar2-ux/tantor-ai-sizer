@@ -47,6 +47,8 @@ function crore(lakh: number) {
 
 function Results() {
   const { scenario, result, update } = useScenario();
+  const { presenting } = usePresentation();
+
   const { cost, cloud, environments, sizing, model, gpu, precision, template } = result;
   const [tab, setTab] = useState<Provider>(cloud.bestProvider);
 
