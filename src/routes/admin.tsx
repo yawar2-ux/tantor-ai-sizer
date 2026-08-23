@@ -196,7 +196,6 @@ function Commercials() {
     <section className="card-surface p-5">
       <h2 className="mb-4 text-lg font-semibold">Commercial terms</h2>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {(
           [
             ["discountPct", "Discount percent on capex"],
             ["gstPct", "GST percent"],
@@ -336,7 +335,6 @@ function RoleAdmin() {
                   No roles assigned yet.
                 </td>
               </tr>
-            )}
             {rows.map((r) => (
               <tr key={r.id} className="border-b border-border last:border-0">
                 <td className={td}>{r.email ?? r.user_id}</td>
