@@ -41,11 +41,11 @@ export async function listSizingEvents(limit = 1000): Promise<SizingEvent[]> {
   return (data ?? []) as SizingEvent[];
 }
 
-export function countBy<T extends string>(rows: { [k: string]: unknown }[], key: string): [T, number][] {
+export function countBy(rows: SizingEvent[], key: "model" | "gpu" | "precision"): [string, number][] {
   const m = new Map<string, number>();
   for (const r of rows) {
     const k = String(r[key] ?? "—");
     m.set(k, (m.get(k) ?? 0) + 1);
   }
-  return [...m.entries()].sort((a, b) => b[1] - a[1]) as [T, number][];
+  return [...m.entries()].sort((a, b) => b[1] - a[1]);
 }
