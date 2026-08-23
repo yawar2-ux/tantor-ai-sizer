@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useScenario } from "@/state/scenario";
 import { usePresentation } from "@/state/presentation";
 import { inrLakh, inrPlain, num } from "@/lib/format";
 import { exportExcel, exportScenarioJson } from "@/lib/export";
+import { logSizing } from "@/lib/analytics";
 import {
   BreakEvenPanel,
   PhasedPanel,
@@ -51,6 +52,21 @@ function Results() {
 
   const { cost, cloud, environments, sizing, model, gpu, precision, template } = result;
   const [tab, setTab] = useState<Provider>(cloud.bestProvider);
+
+  // Usage analytics: one log line per distinct sizing viewed on this page.
+  const logged = useRef<string>("");
+  useEffect(() => {
+    const key = `${model.name}|${gpu.name}|${precision.name}|${sizing.prodGpus}`;
+    if (logged.current === key) return;
+    logged.current = key;
+    void logSizing({
+      model: model.name,
+      gpu: gpu.name,
+      precision: precision.name,
+      prodGpus: sizing.prodGpus,
+      tco3L: cost.tco3L,
+    });
+  }, [model.name, gpu.name, precision.name, sizing.prodGpus, cost.tco3L]);
 
   const bars = [
     { label: "On-premise", value: cost.tco3L, kind: "onprem" as const },
@@ -220,9 +236,37 @@ function Results() {
                 </tr>
               ))}
               <tr className="border-b border-border">
-                <td className={`${td} font-semibold`}>Capex</td>
-                <td className={`${td} numeral text-right font-semibold text-rose`}>{inrLakh(cost.capexL)}</td>
+                <td className={`${td} font-semibold`}>Capex (list)</td>
+                <td className={`${td} numeral text-right font-semibold`}>{inrLakh(cost.capexL)}</td>
               </tr>
+              {cost.discountL > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Negotiated discount</td>
+                  <td className={`${td} numeral text-right`}>− {inrLakh(cost.discountL)}</td>
+                </tr>
+              )}
+              {cost.gstL > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>GST</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.gstL)}</td>
+                </tr>
+              )}
+              <tr className="border-b border-border">
+                <td className={`${td} font-semibold`}>Capex payable</td>
+                <td className={`${td} numeral text-right font-semibold text-rose`}>{inrLakh(cost.capexPayableL)}</td>
+              </tr>
+              {cost.licenceLyr > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Tantor licence per year</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.licenceLyr)}</td>
+                </tr>
+              )}
+              {cost.supportLyr > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Tantor support per year</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.supportLyr)}</td>
+                </tr>
+              )}
               <tr className="border-b border-border">
                 <td className={td}>Power per year</td>
                 <td className={`${td} numeral text-right`}>{inrLakh(cost.powerLyr)}</td>

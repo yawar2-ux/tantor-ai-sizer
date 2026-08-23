@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { usePresentation } from "@/state/presentation";
 import { useAuth } from "@/hooks/useAuth";
+import { useRole } from "@/hooks/useRole";
 
 import tantorLogo from "/tantor-logo-reversed.svg";
 
@@ -21,13 +23,18 @@ const library = [
 
 const extras = [
   { to: "/assumptions", label: "Assumptions" },
+  { to: "/calibration", label: "Calibration" },
   { to: "/admin", label: "Admin" },
 ];
 
-function NavItem({ to, label, step }: { to: string; label: string; step?: number }) {
+/** Sales sees the client-facing results and exports only. */
+const SALES_ALLOWED = new Set(["/", "/results", "/scenarios", "/compare"]);
+
+function NavItem({ to, label, step, onNavigate }: { to: string; label: string; step?: number | undefined; onNavigate?: (() => void) | undefined }) {
   return (
     <Link
       to={to}
+      onClick={onNavigate}
       activeOptions={{ exact: to === "/" }}
       className="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-brand-foreground/70 transition-colors hover:bg-brand-foreground/10 hover:text-brand-foreground data-[status=active]:bg-rose data-[status=active]:text-rose-foreground"
     >
@@ -46,35 +53,36 @@ function NavItem({ to, label, step }: { to: string; label: string; step?: number
   );
 }
 
-export function Sidebar() {
+function NavBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { presenting, toggle } = usePresentation();
   const { user, signOut } = useAuth();
+  const { isSales } = useRole();
+
+  const visible = (to: string) => (isSales ? SALES_ALLOWED.has(to) : true);
+  const extrasVisible = extras.filter((e) => visible(e.to));
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col bg-brand px-4 py-5">
-      {/* Tantor wordmark — reversed (white) variant for the dark sidebar */}
-      <img src={tantorLogo} alt="Tantor" className="mb-8 h-9 w-[140px] shrink-0 object-contain" />
-
+    <>
       <nav className="flex flex-col gap-1">
-        {steps.map((s) => (
-          <NavItem key={s.to} {...s} />
+        {steps.filter((s) => visible(s.to)).map((s) => (
+          <NavItem key={s.to} {...s} onNavigate={onNavigate} />
         ))}
       </nav>
 
       <div className="my-5 h-px bg-brand-foreground/15" />
 
       <nav className="flex flex-col gap-1">
-        {library.map((s) => (
-          <NavItem key={s.to} {...s} />
+        {library.filter((s) => visible(s.to)).map((s) => (
+          <NavItem key={s.to} {...s} onNavigate={onNavigate} />
         ))}
       </nav>
 
-      {!presenting && (
+      {!presenting && extrasVisible.length > 0 && (
         <>
           <div className="my-5 h-px bg-brand-foreground/15" />
           <nav className="flex flex-col gap-1">
-            {extras.map((s) => (
-              <NavItem key={s.to} {...s} />
+            {extrasVisible.map((s) => (
+              <NavItem key={s.to} {...s} onNavigate={onNavigate} />
             ))}
           </nav>
         </>
@@ -103,7 +111,7 @@ export function Sidebar() {
             Sign out ({user.email})
           </button>
         ) : (
-          <Link to="/auth" className="block text-[11px] text-brand-foreground/60 underline">
+          <Link to="/auth" onClick={onNavigate} className="block text-[11px] text-brand-foreground/60 underline">
             Sign in
           </Link>
         )}
@@ -114,6 +122,42 @@ export function Sidebar() {
           Translab Technologies presales
         </div>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export function Sidebar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {/* Desktop and wide tablet */}
+      <aside className="hidden w-64 shrink-0 flex-col bg-brand px-4 py-5 lg:flex">
+        <img src={tantorLogo} alt="Tantor" className="mb-8 h-9 w-[140px] shrink-0 object-contain" />
+        <NavBody />
+      </aside>
+
+      {/* Tablet and phone */}
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-brand px-4 py-2 lg:hidden">
+        <img src={tantorLogo} alt="Tantor" className="h-7 w-[112px] object-contain" />
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen((o) => !o)}
+          className="rounded-lg border border-brand-foreground/30 px-3 py-1.5 font-heading text-xs text-brand-foreground"
+        >
+          {open ? "Close" : "Menu"}
+        </button>
+      </div>
+      {open && (
+        <div
+          id="mobile-nav"
+          className="fixed inset-x-0 top-[52px] bottom-0 z-40 flex flex-col overflow-y-auto bg-brand px-4 py-4 lg:hidden"
+        >
+          <NavBody onNavigate={() => setOpen(false)} />
+        </div>
+      )}
+    </>
   );
 }

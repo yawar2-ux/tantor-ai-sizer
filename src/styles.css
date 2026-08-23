@@ -112,6 +112,12 @@
     border-color: var(--color-border);
   }
 
+  :focus-visible {
+    outline: 2px solid var(--rose);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);

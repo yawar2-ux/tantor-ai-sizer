@@ -131,4 +131,21 @@ export interface Scenario {
   cloudRegions?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
   instanceOverrides?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
   rates: Rates;
+  commercial?: Commercial | undefined;
 }
+
+/** Negotiation and recurring Tantor commercial terms, all optional. */
+export interface Commercial {
+  discountPct: number;
+  gstPct: number;
+  licenceLyr: number;
+  supportLyr: number;
+}
+
+export const DEFAULT_COMMERCIAL: Commercial = {
+  discountPct: 0,
+  gstPct: 0,
+  licenceLyr: 0,
+  supportLyr: 0,
+};
+
