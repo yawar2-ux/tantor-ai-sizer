@@ -128,5 +128,7 @@ export interface Scenario {
   drPct: number;
   drHA: boolean;
   virtualisation: boolean;
+  cloudRegions?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
+  instanceOverrides?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
   rates: Rates;
 }
