@@ -196,6 +196,7 @@ function Commercials() {
     <section className="card-surface p-5">
       <h2 className="mb-4 text-lg font-semibold">Commercial terms</h2>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {(
           [
             ["discountPct", "Discount percent on capex"],
             ["gstPct", "GST percent"],
@@ -319,7 +320,7 @@ function RoleAdmin() {
       </form>
       {msg && <p className="mt-3 text-sm text-rose">{msg}</p>}
 
-        <table className="mt-4 w-full">
+      <table className="mt-4 w-full">
           <thead>
             <tr className="border-b border-border">
               <th className={th}>Email</th>
