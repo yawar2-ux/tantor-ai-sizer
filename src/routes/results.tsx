@@ -187,10 +187,13 @@ function Results() {
             );
           })}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          Cloud lines are committed-use estimates at each provider&apos;s selected region multiplier, converted at{" "}
-          {scenario.rates.fx} INR per USD.
-        </p>
+        {!presenting && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Cloud lines are committed-use estimates at each provider&apos;s selected region multiplier, converted at{" "}
+            {scenario.rates.fx} INR per USD.
+          </p>
+        )}
+
       </section>
 
       <SensitivityPanel scenario={scenario} />
