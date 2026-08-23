@@ -39,11 +39,11 @@ export function median(values: number[]): number {
 }
 
 export function activeBillions(model: Model): number {
-  return model.activeB ?? model.paramsB;
+  return model.activeB;
 }
 
 export function precisionTput(precision: Precision): number {
-  return precision.tputFactor ?? 1;
+  return precision.tput;
 }
 
 export async function listCalibrationRuns(): Promise<CalibrationRun[]> {
