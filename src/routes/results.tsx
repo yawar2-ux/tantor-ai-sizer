@@ -227,6 +227,8 @@ function Results() {
             </tbody>
           </table>
         </section>
+        )}
+
 
         <section className="card-surface p-5">
           <h2 className="mb-3 text-lg font-semibold">Bill of materials summary</h2>
