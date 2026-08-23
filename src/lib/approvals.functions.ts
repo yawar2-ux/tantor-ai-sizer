@@ -26,11 +26,9 @@ async function adminClient(userId: string) {
   const { data, error } = await supabaseAdmin.from("user_roles").select("user_id,role");
   if (error) throw new Error(error.message);
   const rows = data ?? [];
-  const anyAdmin = rows.some((r) => r.role === "admin");
   const isAdmin = rows.some((r) => r.user_id === userId && r.role === "admin");
-  // While the team has no admin at all, the first signed-in user may bootstrap.
-  if (anyAdmin && !isAdmin) throw new Error("Administrators only.");
-  return { supabaseAdmin, anyAdmin, isAdmin };
+  if (!isAdmin) throw new Error("Administrators only.");
+  return { supabaseAdmin, isAdmin };
 }
 
 /** Every account with its status and role. Administrators only. */

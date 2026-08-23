@@ -12,7 +12,7 @@ export interface TeamRoleRow {
   created_at: string;
 }
 
-/** Every role row on the team. Admin only, unless no admin exists yet. */
+/** Every role row on the team. Admins only. */
 export const listTeamRoles = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -23,16 +23,12 @@ export const listTeamRoles = createServerFn({ method: "GET" })
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
     const rows = (data ?? []) as TeamRoleRow[];
-    const anyAdmin = rows.some((r) => r.role === "admin");
     const isAdmin = rows.some((r) => r.user_id === context.userId && r.role === "admin");
-    if (anyAdmin && !isAdmin) throw new Error("Admins only.");
-    return { rows, anyAdmin };
+    if (!isAdmin) throw new Error("Admins only.");
+    return { rows };
   });
 
-/**
- * Grant a role by email. Any signed-in user may claim the first admin seat while
- * the team has no admin at all; after that, only admins can grant roles.
- */
+/** Grant a role by email. Admins only. */
 export const grantRole = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
@@ -43,9 +39,8 @@ export const grantRole = createServerFn({ method: "POST" })
 
     const { data: existing, error: readErr } = await supabaseAdmin.from("user_roles").select("user_id,role");
     if (readErr) throw new Error(readErr.message);
-    const anyAdmin = (existing ?? []).some((r) => r.role === "admin");
     const isAdmin = (existing ?? []).some((r) => r.user_id === context.userId && r.role === "admin");
-    if (anyAdmin && !isAdmin) throw new Error("Admins only.");
+    if (!isAdmin) throw new Error("Admins only.");
 
     const email = data.email.trim().toLowerCase();
     const { data: list, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
