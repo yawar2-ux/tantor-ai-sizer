@@ -236,9 +236,37 @@ function Results() {
                 </tr>
               ))}
               <tr className="border-b border-border">
-                <td className={`${td} font-semibold`}>Capex</td>
-                <td className={`${td} numeral text-right font-semibold text-rose`}>{inrLakh(cost.capexL)}</td>
+                <td className={`${td} font-semibold`}>Capex (list)</td>
+                <td className={`${td} numeral text-right font-semibold`}>{inrLakh(cost.capexL)}</td>
               </tr>
+              {cost.discountL > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Negotiated discount</td>
+                  <td className={`${td} numeral text-right`}>− {inrLakh(cost.discountL)}</td>
+                </tr>
+              )}
+              {cost.gstL > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>GST</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.gstL)}</td>
+                </tr>
+              )}
+              <tr className="border-b border-border">
+                <td className={`${td} font-semibold`}>Capex payable</td>
+                <td className={`${td} numeral text-right font-semibold text-rose`}>{inrLakh(cost.capexPayableL)}</td>
+              </tr>
+              {cost.licenceLyr > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Tantor licence per year</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.licenceLyr)}</td>
+                </tr>
+              )}
+              {cost.supportLyr > 0 && (
+                <tr className="border-b border-border">
+                  <td className={td}>Tantor support per year</td>
+                  <td className={`${td} numeral text-right`}>{inrLakh(cost.supportLyr)}</td>
+                </tr>
+              )}
               <tr className="border-b border-border">
                 <td className={td}>Power per year</td>
                 <td className={`${td} numeral text-right`}>{inrLakh(cost.powerLyr)}</td>
