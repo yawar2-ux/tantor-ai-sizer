@@ -17,6 +17,7 @@ import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
 import { Route as ModelPlatformRouteImport } from './routes/model-platform'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as ScenariosRouteImport } from './routes/scenarios'
 import { Route as WorkloadRouteImport } from './routes/workload'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +60,11 @@ const ResultsRoute = ResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosRoute = ScenariosRouteImport.update({
+  id: '/scenarios',
+  path: '/scenarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkloadRoute = WorkloadRouteImport.update({
   id: '/workload',
   path: '/workload',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   InfrastructureRoute: typeof InfrastructureRoute
   ModelPlatformRoute: typeof ModelPlatformRoute
   ResultsRoute: typeof ResultsRoute
+  ScenariosRoute: typeof ScenariosRoute
   WorkloadRoute: typeof WorkloadRoute
 }
 
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios': {
+      id: '/scenarios'
+      path: '/scenarios'
+      fullPath: '/scenarios'
+      preLoaderRoute: typeof ScenariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workload': {
       id: '/workload'
       path: '/workload'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   InfrastructureRoute: InfrastructureRoute,
   ModelPlatformRoute: ModelPlatformRoute,
   ResultsRoute: ResultsRoute,
+  ScenariosRoute: ScenariosRoute,
   WorkloadRoute: WorkloadRoute,
 }
 export const routeTree = rootRouteImport
