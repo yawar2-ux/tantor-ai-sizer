@@ -139,10 +139,12 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <PresentationProvider>
         <ScenarioProvider>
-          <AppShell>
-            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-            <Outlet />
-          </AppShell>
+          <AuthGate>
+            <AppShell>
+              {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+              <Outlet />
+            </AppShell>
+          </AuthGate>
         </ScenarioProvider>
       </PresentationProvider>
     </QueryClientProvider>
