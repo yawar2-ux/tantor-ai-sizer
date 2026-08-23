@@ -1,0 +1,8 @@
+[
+  { "name": "FP32", "bytes": 4, "tput": 0.25 },
+  { "name": "FP16", "bytes": 2, "tput": 0.5 },
+  { "name": "BF16", "bytes": 2, "tput": 0.5 },
+  { "name": "FP8", "bytes": 1, "tput": 1.0 },
+  { "name": "INT8", "bytes": 1, "tput": 1.0 },
+  { "name": "INT4-GPTQ-AWQ", "bytes": 0.5, "tput": 1.3 }
+]

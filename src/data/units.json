@@ -1,0 +1,9 @@
+[
+  { "name": "Tokens", "tokens": 1 },
+  { "name": "Words", "tokens": 1.33 },
+  { "name": "Pages", "tokens": 665 },
+  { "name": "KB", "tokens": 250 },
+  { "name": "MB", "tokens": 256000 },
+  { "name": "GB", "tokens": 262144000 },
+  { "name": "Characters", "tokens": 0.25 }
+]

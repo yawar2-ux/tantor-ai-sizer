@@ -1,0 +1,10 @@
+[
+  { "name": "1-way PCIe", "gpn": 1, "cores": 16, "ram": 128, "nvmeTB": 3.84, "nic": "2x 25G", "priceL": 6, "watts": 350 },
+  { "name": "2-way PCIe", "gpn": 2, "cores": 32, "ram": 256, "nvmeTB": 7.68, "nic": "2x 25G", "priceL": 9, "watts": 450 },
+  { "name": "2-way NVLink", "gpn": 2, "cores": 32, "ram": 256, "nvmeTB": 7.68, "nic": "2x 100G", "priceL": 11, "watts": 500 },
+  { "name": "4-way PCIe", "gpn": 4, "cores": 64, "ram": 512, "nvmeTB": 15.36, "nic": "2x 100G", "priceL": 18, "watts": 800 },
+  { "name": "4-way NVLink", "gpn": 4, "cores": 64, "ram": 512, "nvmeTB": 15.36, "nic": "4x 200G", "priceL": 24, "watts": 900 },
+  { "name": "8-way SXM5", "gpn": 8, "cores": 112, "ram": 2048, "nvmeTB": 30.72, "nic": "8x 400G", "priceL": 45, "watts": 2000 },
+  { "name": "8-way AMD OAM", "gpn": 8, "cores": 112, "ram": 2048, "nvmeTB": 30.72, "nic": "8x 400G", "priceL": 45, "watts": 2000 },
+  { "name": "Services node", "gpn": 0, "cores": 64, "ram": 512, "nvmeTB": 7.68, "nic": "2x 25G", "priceL": 14, "watts": 450 }
+]
