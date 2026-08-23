@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AssumptionsRouteImport } from './routes/assumptions'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
 import { Route as ModelPlatformRouteImport } from './routes/model-platform'
@@ -31,6 +32,11 @@ const AdminRoute = AdminRouteImport.update({
 const AssumptionsRoute = AssumptionsRouteImport.update({
   id: '/assumptions',
   path: '/assumptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnvironmentsRoute = EnvironmentsRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   AssumptionsRoute: typeof AssumptionsRoute
+  AuthRoute: typeof AuthRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
   InfrastructureRoute: typeof InfrastructureRoute
   ModelPlatformRoute: typeof ModelPlatformRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/assumptions'
       fullPath: '/assumptions'
       preLoaderRoute: typeof AssumptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/environments': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AssumptionsRoute: AssumptionsRoute,
+  AuthRoute: AuthRoute,
   EnvironmentsRoute: EnvironmentsRoute,
   InfrastructureRoute: InfrastructureRoute,
   ModelPlatformRoute: ModelPlatformRoute,
