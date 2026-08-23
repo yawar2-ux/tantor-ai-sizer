@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AssumptionsRouteImport } from './routes/assumptions'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
 import { Route as ModelPlatformRouteImport } from './routes/model-platform'
@@ -38,6 +39,11 @@ const AssumptionsRoute = AssumptionsRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnvironmentsRoute = EnvironmentsRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AssumptionsRoute: typeof AssumptionsRoute
   AuthRoute: typeof AuthRoute
+  CompareRoute: typeof CompareRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
   InfrastructureRoute: typeof InfrastructureRoute
   ModelPlatformRoute: typeof ModelPlatformRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/environments': {
@@ -240,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AssumptionsRoute: AssumptionsRoute,
   AuthRoute: AuthRoute,
+  CompareRoute: CompareRoute,
   EnvironmentsRoute: EnvironmentsRoute,
   InfrastructureRoute: InfrastructureRoute,
   ModelPlatformRoute: ModelPlatformRoute,
