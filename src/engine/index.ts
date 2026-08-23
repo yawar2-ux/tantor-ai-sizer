@@ -29,6 +29,7 @@ export * from "./infra";
 export * from "./environments";
 export * from "./cost";
 export * from "./cloud";
+export { REGIONS, INSTANCES, PROVIDERS, PROVIDER_LABEL, DEFAULT_REGIONS } from "./cloud";
 
 export interface ScenarioResult {
   tokens: TokenTotals;
