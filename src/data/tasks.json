@@ -1,0 +1,7 @@
+[
+  { "name": "Summarisation", "inTok": 20000, "outTok": 400, "mult": 1.0 },
+  { "name": "Generation", "inTok": 1500, "outTok": 2500, "mult": 1.0 },
+  { "name": "Extraction-Classification", "inTok": 800, "outTok": 150, "mult": 1.0 },
+  { "name": "RAG Q&A", "inTok": 4000, "outTok": 600, "mult": 1.0 },
+  { "name": "Reasoning-Agentic", "inTok": 6000, "outTok": 1500, "mult": 4.0 }
+]

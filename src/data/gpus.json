@@ -1,0 +1,20 @@
+[
+  { "name": "NVIDIA Rubin SXM", "vram": 288, "usable": 0.9, "idx": 3.5, "cardL": 75, "watts": 1800, "cloudRate": { "aws": 20, "azure": 22, "gcp": 21, "oci": 18 }, "avail": "2026-27 roadmap" },
+  { "name": "NVIDIA B300 SXM", "vram": 288, "usable": 0.9, "idx": 2.8, "cardL": 60, "watts": 1400, "cloudRate": { "aws": 16, "azure": 18, "gcp": 17, "oci": 15 }, "avail": "Limited GA" },
+  { "name": "NVIDIA B200 SXM", "vram": 192, "usable": 0.9, "idx": 2.4, "cardL": 48, "watts": 1200, "cloudRate": { "aws": 13, "azure": 16, "gcp": 15, "oci": 13 }, "avail": "GA" },
+  { "name": "NVIDIA H200 SXM", "vram": 141, "usable": 0.9, "idx": 1.4, "cardL": 33, "watts": 800, "cloudRate": { "aws": 8, "azure": 13.5, "gcp": 12, "oci": 10.5 }, "avail": "GA" },
+  { "name": "NVIDIA H200 NVL PCIe", "vram": 141, "usable": 0.9, "idx": 1.3, "cardL": 30, "watts": 600, "cloudRate": { "aws": 7.5, "azure": 12.5, "gcp": 11, "oci": 10 }, "avail": "GA" },
+  { "name": "NVIDIA H100 SXM5", "vram": 80, "usable": 0.9, "idx": 1.0, "cardL": 28, "watts": 750, "cloudRate": { "aws": 6.88, "azure": 12.29, "gcp": 11.06, "oci": 10 }, "avail": "GA" },
+  { "name": "NVIDIA H100 NVL PCIe", "vram": 94, "usable": 0.9, "idx": 1.15, "cardL": 30, "watts": 500, "cloudRate": { "aws": 7.5, "azure": 12, "gcp": 11, "oci": 9.5 }, "avail": "GA" },
+  { "name": "NVIDIA H100 PCIe", "vram": 80, "usable": 0.9, "idx": 0.6, "cardL": 24, "watts": 500, "cloudRate": { "aws": 5.5, "azure": 9.5, "gcp": 8.5, "oci": 8 }, "avail": "GA" },
+  { "name": "NVIDIA A100 SXM4 80GB", "vram": 80, "usable": 0.9, "idx": 0.5, "cardL": 17, "watts": 550, "cloudRate": { "aws": 4.1, "azure": 3.67, "gcp": 3.28, "oci": 3.05 }, "avail": "GA" },
+  { "name": "NVIDIA A100 PCIe 80GB", "vram": 80, "usable": 0.9, "idx": 0.45, "cardL": 15, "watts": 400, "cloudRate": { "aws": 3.6, "azure": 3.2, "gcp": 2.9, "oci": 2.7 }, "avail": "GA" },
+  { "name": "NVIDIA L40S PCIe", "vram": 48, "usable": 0.9, "idx": 0.21, "cardL": 9, "watts": 500, "cloudRate": { "aws": 1.86, "azure": 2.2, "gcp": 2.0, "oci": 3.5 }, "avail": "GA" },
+  { "name": "AMD MI455X", "vram": 432, "usable": 0.9, "idx": 3.2, "cardL": 75, "watts": 1800, "cloudRate": { "aws": 16, "azure": 16, "gcp": 16, "oci": 15 }, "avail": "roadmap" },
+  { "name": "AMD MI430X", "vram": 432, "usable": 0.9, "idx": 2.6, "cardL": 65, "watts": 1600, "cloudRate": { "aws": 14, "azure": 14, "gcp": 14, "oci": 13 }, "avail": "roadmap" },
+  { "name": "AMD MI355X", "vram": 288, "usable": 0.9, "idx": 2.0, "cardL": 38, "watts": 1400, "cloudRate": { "aws": 10, "azure": 10, "gcp": 10, "oci": 9.5 }, "avail": "GA" },
+  { "name": "AMD MI350X", "vram": 288, "usable": 0.9, "idx": 1.8, "cardL": 32, "watts": 1000, "cloudRate": { "aws": 9, "azure": 9, "gcp": 9, "oci": 8.5 }, "avail": "GA" },
+  { "name": "AMD MI350P", "vram": 288, "usable": 0.9, "idx": 1.6, "cardL": 30, "watts": 850, "cloudRate": { "aws": 8, "azure": 8, "gcp": 8, "oci": 7.5 }, "avail": "Limited GA" },
+  { "name": "AMD MI325X", "vram": 256, "usable": 0.9, "idx": 1.3, "cardL": 24, "watts": 1000, "cloudRate": { "aws": 7, "azure": 7, "gcp": 7, "oci": 6.5 }, "avail": "GA" },
+  { "name": "AMD MI300X", "vram": 192, "usable": 0.9, "idx": 1.1, "cardL": 20, "watts": 750, "cloudRate": { "aws": 6, "azure": 6, "gcp": 6, "oci": 6 }, "avail": "GA" }
+]

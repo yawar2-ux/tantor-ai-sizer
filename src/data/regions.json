@@ -1,0 +1,5 @@
+[
+  { "name": "India (Mumbai)", "aws": "ap-south-1", "azure": "centralindia", "gcp": "asia-south1", "oci": "ap-mumbai-1" },
+  { "name": "India (Hyderabad)", "aws": "ap-south-2", "azure": "southindia", "gcp": "asia-south2", "oci": "ap-hyderabad-1" },
+  { "name": "Singapore", "aws": "ap-southeast-1", "azure": "southeastasia", "gcp": "asia-southeast1", "oci": "ap-singapore-1" }
+]

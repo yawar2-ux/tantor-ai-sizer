@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AssumptionsRouteImport } from './routes/assumptions'
+import { Route as EnvironmentsRouteImport } from './routes/environments'
+import { Route as InfrastructureRouteImport } from './routes/infrastructure'
+import { Route as ModelPlatformRouteImport } from './routes/model-platform'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as WorkloadRouteImport } from './routes/workload'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssumptionsRoute = AssumptionsRouteImport.update({
+  id: '/assumptions',
+  path: '/assumptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnvironmentsRoute = EnvironmentsRouteImport.update({
+  id: '/environments',
+  path: '/environments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfrastructureRoute = InfrastructureRouteImport.update({
+  id: '/infrastructure',
+  path: '/infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelPlatformRoute = ModelPlatformRouteImport.update({
+  id: '/model-platform',
+  path: '/model-platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkloadRoute = WorkloadRouteImport.update({
+  id: '/workload',
+  path: '/workload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/assumptions': typeof AssumptionsRoute
+  '/environments': typeof EnvironmentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/model-platform': typeof ModelPlatformRoute
+  '/results': typeof ResultsRoute
+  '/workload': typeof WorkloadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/assumptions': typeof AssumptionsRoute
+  '/environments': typeof EnvironmentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/model-platform': typeof ModelPlatformRoute
+  '/results': typeof ResultsRoute
+  '/workload': typeof WorkloadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/assumptions': typeof AssumptionsRoute
+  '/environments': typeof EnvironmentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/model-platform': typeof ModelPlatformRoute
+  '/results': typeof ResultsRoute
+  '/workload': typeof WorkloadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/assumptions'
+    | '/environments'
+    | '/infrastructure'
+    | '/model-platform'
+    | '/results'
+    | '/workload'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/assumptions'
+    | '/environments'
+    | '/infrastructure'
+    | '/model-platform'
+    | '/results'
+    | '/workload'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/assumptions'
+    | '/environments'
+    | '/infrastructure'
+    | '/model-platform'
+    | '/results'
+    | '/workload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AssumptionsRoute: typeof AssumptionsRoute
+  EnvironmentsRoute: typeof EnvironmentsRoute
+  InfrastructureRoute: typeof InfrastructureRoute
+  ModelPlatformRoute: typeof ModelPlatformRoute
+  ResultsRoute: typeof ResultsRoute
+  WorkloadRoute: typeof WorkloadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assumptions': {
+      id: '/assumptions'
+      path: '/assumptions'
+      fullPath: '/assumptions'
+      preLoaderRoute: typeof AssumptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/environments': {
+      id: '/environments'
+      path: '/environments'
+      fullPath: '/environments'
+      preLoaderRoute: typeof EnvironmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infrastructure': {
+      id: '/infrastructure'
+      path: '/infrastructure'
+      fullPath: '/infrastructure'
+      preLoaderRoute: typeof InfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-platform': {
+      id: '/model-platform'
+      path: '/model-platform'
+      fullPath: '/model-platform'
+      preLoaderRoute: typeof ModelPlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workload': {
+      id: '/workload'
+      path: '/workload'
+      fullPath: '/workload'
+      preLoaderRoute: typeof WorkloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AssumptionsRoute: AssumptionsRoute,
+  EnvironmentsRoute: EnvironmentsRoute,
+  InfrastructureRoute: InfrastructureRoute,
+  ModelPlatformRoute: ModelPlatformRoute,
+  ResultsRoute: ResultsRoute,
+  WorkloadRoute: WorkloadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

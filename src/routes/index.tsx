@@ -1,24 +1,92 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { useScenario } from "@/state/scenario";
+import { inrLakh, num } from "@/lib/format";
+import { PROVIDER_LABEL, RATES } from "@/engine";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Tantor Gen AI Sizer | Translab presales sizing" },
+      {
+        name: "description",
+        content:
+          "Size Tantor on-premise governed AI deployments: GPUs, nodes, storage and three-year TCO in INR, compared with AWS, Azure, GCP and OCI.",
+      },
+      { property: "og:title", content: "Tantor Gen AI Sizer" },
+      {
+        property: "og:description",
+        content: "GPU and infrastructure sizing for the Tantor governed AI platform, priced in Indian rupees.",
+      },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const steps = [
+  { to: "/workload", n: 1, title: "Workload", text: "Capture use cases, users, request rates and token sizes." },
+  { to: "/model-platform", n: 2, title: "Model & Platform", text: "Choose the open-weight model, GPU and precision." },
+  { to: "/infrastructure", n: 3, title: "Infrastructure", text: "Corpus, index, logging, storage and node templates." },
+  { to: "/environments", n: 4, title: "Environments", text: "Prod, Dev, UAT and DR scaling with virtualisation." },
+  { to: "/results", n: 5, title: "Results", text: "Bill of quantities, on-premise TCO and cloud comparison." },
+];
+
+function Home() {
+  const { result } = useScenario();
+  const { sizing, environments, cost, cloud } = result;
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Translab Technologies"
+        title="Tantor Gen AI Sizer"
+        intro="Size a Tantor on-premise governed AI deployment from business use cases, then compare the three-year cost against AWS, Azure, GCP and OCI. Every figure is in Indian rupees."
       />
+
+      <section className="grid gap-4 md:grid-cols-3">
+        <div className="card-surface p-5">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">Current scenario</div>
+          <div className="numeral mt-2 text-3xl font-semibold text-rose">{num(sizing.prodGpus)} GPUs</div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Production, binding constraint {sizing.constraint.toLowerCase()}.
+          </p>
+        </div>
+        <div className="card-surface p-5">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">On-premise 3-year TCO</div>
+          <div className="numeral mt-2 text-3xl font-semibold text-rose">{inrLakh(cost.tco3L)}</div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {num(environments.totalNodes)} nodes across all environments.
+          </p>
+        </div>
+        <div className="card-surface p-5">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">Best cloud alternative</div>
+          <div className="numeral mt-2 text-3xl font-semibold text-info">{inrLakh(cloud.bestTco3L)}</div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {PROVIDER_LABEL[cloud.bestProvider]}, list rates converted at {RATES.fx} INR per USD.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">Work through the five steps</h2>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {steps.map((s) => (
+            <Link
+              key={s.to}
+              to={s.to}
+              className="card-surface flex gap-4 p-5 transition-shadow hover:border-rose"
+            >
+              <span className="numeral flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground">
+                {s.n}
+              </span>
+              <span>
+                <span className="block font-heading font-semibold text-brand">{s.title}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{s.text}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
