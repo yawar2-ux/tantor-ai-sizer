@@ -69,17 +69,21 @@ export async function getScenario(id: string): Promise<SavedScenario | null> {
   return (data as unknown as SavedScenario) ?? null;
 }
 
+/**
+ * Shared scenarios are no longer readable through the table. The token-gated
+ * SECURITY DEFINER function returns at most the one row whose share_token
+ * matches exactly, so knowing the project URL is not enough.
+ */
 export async function getSharedScenario(token: string): Promise<SavedScenario | null> {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(token)) return null;
   const { data, error } = await supabase
-    .from("scenarios")
-    .select("*")
-    .eq("share_token", token)
-    .eq("is_shared", true)
-    .maybeSingle();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .rpc("get_shared_scenario" as any, { _token: token } as any);
   if (error) throw error;
-  return (data as unknown as SavedScenario) ?? null;
+  const row = Array.isArray(data) ? data[0] : data;
+  return (row as unknown as SavedScenario) ?? null;
 }
+
 
 export async function createScenario(input: {
   client: string;
