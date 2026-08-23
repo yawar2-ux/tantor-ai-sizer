@@ -1,8 +1,0 @@
-[
-  { "gpu": "NVIDIA H100 SXM5", "aws": "p5.48xlarge", "azure": "ND H100 v5", "gcp": "a3-highgpu-8g", "oci": "BM.GPU.H100.8" },
-  { "gpu": "NVIDIA H200 SXM", "aws": "p5e.48xlarge", "azure": "ND H200 v5", "gcp": "a3-ultragpu-8g", "oci": "BM.GPU.H200.8" },
-  { "gpu": "NVIDIA B200 SXM", "aws": "p6-b200.48xlarge", "azure": "ND GB200 v6", "gcp": "a4-highgpu-8g", "oci": "BM.GPU.B200.8" },
-  { "gpu": "NVIDIA A100 SXM4 80GB", "aws": "p4de.24xlarge", "azure": "ND A100 v4", "gcp": "a2-ultragpu-8g", "oci": "BM.GPU4.8" },
-  { "gpu": "NVIDIA L40S PCIe", "aws": "g6e.48xlarge", "azure": "NV L40S v5", "gcp": "g2-standard-96", "oci": "BM.GPU.L40S.4" },
-  { "gpu": "AMD MI300X", "aws": "n/a", "azure": "ND MI300X v5", "gcp": "n/a", "oci": "BM.GPU.MI300X.8" }
-]

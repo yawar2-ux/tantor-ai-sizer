@@ -1,5 +1,31 @@
-[
-  { "name": "India (Mumbai)", "aws": "ap-south-1", "azure": "centralindia", "gcp": "asia-south1", "oci": "ap-mumbai-1" },
-  { "name": "India (Hyderabad)", "aws": "ap-south-2", "azure": "southindia", "gcp": "asia-south2", "oci": "ap-hyderabad-1" },
-  { "name": "Singapore", "aws": "ap-southeast-1", "azure": "southeastasia", "gcp": "asia-southeast1", "oci": "ap-singapore-1" }
-]
+{
+  "aws": [
+    { "id": "ap-south-1", "name": "ap-south-1 Mumbai", "mult": 1.12, "note": "H100 constrained; quota approvals take weeks", "india": true },
+    { "id": "ap-south-2", "name": "ap-south-2 Hyderabad", "mult": 1.1, "note": "Newer region, narrower GPU catalogue" },
+    { "id": "us-east-1", "name": "us-east-1 N. Virginia", "mult": 1.0, "note": "Deepest GPU capacity, data leaves India" },
+    { "id": "us-west-2", "name": "us-west-2 Oregon", "mult": 1.0, "note": "Deep GPU capacity, data leaves India" },
+    { "id": "eu-central-1", "name": "eu-central-1 Frankfurt", "mult": 1.1, "note": "EU residency, GDPR applies" },
+    { "id": "ap-southeast-1", "name": "ap-southeast-1 Singapore", "mult": 1.18, "note": "Common India fallback, highest premium" }
+  ],
+  "azure": [
+    { "id": "centralindia", "name": "Central India (Pune)", "mult": 1.1, "note": "Primary India GPU region", "india": true },
+    { "id": "southindia", "name": "South India (Chennai)", "mult": 1.12, "note": "Limited ND-series availability" },
+    { "id": "eastus", "name": "East US", "mult": 1.0, "note": "Best availability, data leaves India" },
+    { "id": "westeurope", "name": "West Europe", "mult": 1.12, "note": "EU residency, GDPR applies" },
+    { "id": "southeastasia", "name": "Southeast Asia (Singapore)", "mult": 1.15, "note": "Regional fallback for India workloads" }
+  ],
+  "gcp": [
+    { "id": "asia-south1", "name": "asia-south1 Mumbai", "mult": 1.08, "note": "Primary India GPU region", "india": true },
+    { "id": "asia-south2", "name": "asia-south2 Delhi", "mult": 1.1, "note": "Thin accelerator catalogue" },
+    { "id": "us-central1", "name": "us-central1 Iowa", "mult": 1.0, "note": "Deepest A3 capacity, data leaves India" },
+    { "id": "europe-west3", "name": "europe-west3 Frankfurt", "mult": 1.1, "note": "EU residency, GDPR applies" },
+    { "id": "asia-southeast1", "name": "asia-southeast1 Singapore", "mult": 1.12, "note": "Regional fallback for India workloads" }
+  ],
+  "oci": [
+    { "id": "ap-hyderabad-1", "name": "ap-hyderabad-1 Hyderabad", "mult": 1.0, "note": "OCI holds list pricing globally" },
+    { "id": "ap-mumbai-1", "name": "ap-mumbai-1 Mumbai", "mult": 1.0, "note": "OCI holds list pricing globally", "india": true },
+    { "id": "us-ashburn-1", "name": "us-ashburn-1 Ashburn", "mult": 1.0, "note": "OCI holds list pricing globally" },
+    { "id": "eu-frankfurt-1", "name": "eu-frankfurt-1 Frankfurt", "mult": 1.0, "note": "OCI holds list pricing globally" },
+    { "id": "ap-singapore-1", "name": "ap-singapore-1 Singapore", "mult": 1.0, "note": "OCI holds list pricing globally" }
+  ]
+}

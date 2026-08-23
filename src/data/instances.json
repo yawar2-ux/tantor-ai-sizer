@@ -1,0 +1,40 @@
+{
+  "aws": {
+    "services": { "type": "m6i.16xlarge", "vcpu": 64 },
+    "gpus": [
+      { "gpu": "NVIDIA H100 SXM5", "type": "p5.48xlarge", "gpn": 8 },
+      { "gpu": "NVIDIA H200 SXM", "type": "p5e.48xlarge", "gpn": 8 },
+      { "gpu": "NVIDIA B200 SXM", "type": "p6-b200.48xlarge", "gpn": 8 },
+      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "p4d.24xlarge", "gpn": 8 },
+      { "gpu": "NVIDIA L40S PCIe", "type": "g6e.xlarge", "gpn": 1 }
+    ]
+  },
+  "azure": {
+    "services": { "type": "D64s v5", "vcpu": 64 },
+    "gpus": [
+      { "gpu": "NVIDIA H100 SXM5", "type": "ND96isr H100 v5", "gpn": 8 },
+      { "gpu": "NVIDIA H200 SXM", "type": "ND H200 v5", "gpn": 8 },
+      { "gpu": "AMD MI300X", "type": "ND MI300X v5", "gpn": 8 },
+      { "gpu": "NVIDIA A100 PCIe 80GB", "type": "NC96ads A100 v4", "gpn": 4 }
+    ]
+  },
+  "gcp": {
+    "services": { "type": "n2-standard-64", "vcpu": 64 },
+    "gpus": [
+      { "gpu": "NVIDIA H100 SXM5", "type": "a3-highgpu-8g", "gpn": 8 },
+      { "gpu": "NVIDIA H200 SXM", "type": "a3-ultragpu-8g", "gpn": 8 },
+      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "a2-ultragpu-8g", "gpn": 8 },
+      { "gpu": "NVIDIA L40S PCIe", "type": "g2-standard-4", "gpn": 1 }
+    ]
+  },
+  "oci": {
+    "services": { "type": "VM.Standard.E5.Flex-64", "vcpu": 64 },
+    "gpus": [
+      { "gpu": "NVIDIA H100 SXM5", "type": "BM.GPU.H100.8", "gpn": 8 },
+      { "gpu": "NVIDIA H200 SXM", "type": "BM.GPU.H200.8", "gpn": 8 },
+      { "gpu": "AMD MI300X", "type": "BM.GPU.MI300X.8", "gpn": 8 },
+      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "BM.GPU.A100-v2.8", "gpn": 8 },
+      { "gpu": "NVIDIA L40S PCIe", "type": "VM.GPU.L40S.1", "gpn": 1 }
+    ]
+  }
+}

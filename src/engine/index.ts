@@ -12,7 +12,7 @@ import { computeSizing, type SizingResult } from "./sizing";
 import { computeInfra, computeNodeChecks, suggestTemplate, type InfraResult, type NodeChecks } from "./infra";
 import { computeEnvironments, type EnvironmentsResult } from "./environments";
 import { computeCost, type CostResult } from "./cost";
-import { computeCloud, type CloudResult } from "./cloud";
+import { computeCloud, DEFAULT_REGIONS, type CloudResult } from "./cloud";
 
 export const TASKS = tasksData as Task[];
 export const UNITS = unitsData as Unit[];
@@ -29,6 +29,7 @@ export * from "./infra";
 export * from "./environments";
 export * from "./cost";
 export * from "./cloud";
+export { REGIONS, INSTANCES, PROVIDERS, PROVIDER_LABEL, DEFAULT_REGIONS } from "./cloud";
 
 export interface ScenarioResult {
   tokens: TokenTotals;
@@ -86,6 +87,7 @@ export function defaultScenario(): Scenario {
     drPct: 1.0,
     drHA: false,
     virtualisation: true,
+    cloudRegions: { ...DEFAULT_REGIONS },
     rates: RATES,
   };
 }
@@ -130,7 +132,10 @@ export function computeScenario(s: Scenario): ScenarioResult {
     },
   );
   const cost = computeCost(environments, template, gpu, rates, checks.fabricRequired, tokens);
-  const cloud = computeCloud(environments, gpu, rates);
+  const cloud = computeCloud(environments, gpu, rates, {
+    regions: s.cloudRegions,
+    instanceOverrides: s.instanceOverrides,
+  });
 
   return { tokens, sizing, infra, checks, template, gpu, model, precision, environments, cost, cloud };
 }
