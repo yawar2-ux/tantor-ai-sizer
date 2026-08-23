@@ -56,10 +56,10 @@ function NavItem({ to, label, step, onNavigate }: { to: string; label: string; s
 function NavBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { presenting, toggle } = usePresentation();
   const { user, signOut } = useAuth();
-  const { isSales, isAdmin } = useRole();
+  const { isSales } = useRole();
 
   const visible = (to: string) => (isSales ? SALES_ALLOWED.has(to) : true);
-  const extrasVisible = extras.filter((e) => (e.to === "/admin" ? isAdmin : visible(e.to)));
+  const extrasVisible = extras.filter((e) => visible(e.to));
 
   return (
     <>
