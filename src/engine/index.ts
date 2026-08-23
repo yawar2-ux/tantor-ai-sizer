@@ -6,6 +6,7 @@ import precisionsData from "../data/precisions.json";
 import templatesData from "../data/templates.json";
 import ratesData from "../data/rates.json";
 
+import { DEFAULT_COMMERCIAL } from "./types";
 import type { Gpu, Model, Precision, Rates, Scenario, Task, Template, Unit } from "./types";
 import { computeTokens, type TokenTotals } from "./tokens";
 import { computeSizing, type SizingResult } from "./sizing";
@@ -88,6 +89,7 @@ export function defaultScenario(): Scenario {
     drHA: false,
     virtualisation: true,
     cloudRegions: { ...DEFAULT_REGIONS },
+    commercial: { ...DEFAULT_COMMERCIAL },
     rates: RATES,
   };
 }
@@ -131,7 +133,15 @@ export function computeScenario(s: Scenario): ScenarioResult {
       virtualisation: s.virtualisation,
     },
   );
-  const cost = computeCost(environments, template, gpu, rates, checks.fabricRequired, tokens);
+  const cost = computeCost(
+    environments,
+    template,
+    gpu,
+    rates,
+    checks.fabricRequired,
+    tokens,
+    s.commercial ?? DEFAULT_COMMERCIAL,
+  );
   const cloud = computeCloud(environments, gpu, rates, {
     regions: s.cloudRegions,
     instanceOverrides: s.instanceOverrides,
