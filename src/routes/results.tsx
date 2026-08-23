@@ -2,8 +2,15 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useScenario } from "@/state/scenario";
+import { usePresentation } from "@/state/presentation";
 import { inrLakh, inrPlain, num } from "@/lib/format";
 import { exportExcel, exportScenarioJson } from "@/lib/export";
+import {
+  BreakEvenPanel,
+  PhasedPanel,
+  RackPowerPanel,
+  SensitivityPanel,
+} from "@/components/results/AnalysisPanels";
 import {
   PROVIDERS,
   PROVIDER_LABEL,
@@ -11,6 +18,7 @@ import {
   type EnvName,
   type Provider,
 } from "@/engine";
+
 
 export const Route = createFileRoute("/results")({
   head: () => ({
