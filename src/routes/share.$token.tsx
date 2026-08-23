@@ -39,9 +39,10 @@ function SharePage() {
   if (state === "missing" || !row || !result)
     return (
       <div className="max-w-lg">
-        <PageHeader eyebrow="Shared link" title="This link is not available" />
+        <PageHeader eyebrow="Shared link" title="This link is no longer available" />
         <p className="text-sm text-muted-foreground">
-          The scenario may have been unshared or deleted. Ask the Translab presales owner for a fresh link.
+          This share link is no longer available. It may have been revoked or the scenario deleted. Ask the Translab
+          presales owner for a fresh link.
         </p>
       </div>
     );

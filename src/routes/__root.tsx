@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -135,6 +136,22 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Share links are token gated in the database, so they are the one public route.
+  const isPublicShare = useRouterState({
+    select: (s) => s.location.pathname.startsWith("/share/"),
+  });
+
+  if (isPublicShare) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen bg-background px-4 py-10 sm:px-8">
+          <div className="mx-auto max-w-5xl">
+            <Outlet />
+          </div>
+        </div>
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
