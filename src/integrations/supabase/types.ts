@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      calibration_runs: {
+        Row: {
+          created_at: string
+          gpu: string
+          id: string
+          measured_tps: number
+          model: string
+          notes: string
+          precision: string
+          ran_on: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          gpu: string
+          id?: string
+          measured_tps: number
+          model: string
+          notes?: string
+          precision: string
+          ran_on?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          gpu?: string
+          id?: string
+          measured_tps?: number
+          model?: string
+          notes?: string
+          precision?: string
+          ran_on?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       scenario_changes: {
         Row: {
           created_at: string
@@ -91,15 +130,78 @@ export type Database = {
         }
         Relationships: []
       }
+      sizing_events: {
+        Row: {
+          created_at: string
+          gpu: string
+          id: string
+          model: string
+          precision: string
+          prod_gpus: number
+          tco3_l: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          gpu: string
+          id?: string
+          model: string
+          precision: string
+          prod_gpus?: number
+          tco3_l?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          gpu?: string
+          id?: string
+          model?: string
+          precision?: string
+          prod_gpus?: number
+          tco3_l?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "presales" | "sales"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -226,6 +328,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "presales", "sales"],
+    },
   },
 } as const
