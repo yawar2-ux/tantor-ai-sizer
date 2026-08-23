@@ -307,7 +307,9 @@ function Results() {
         </table>
       </section>
 
+      {!presenting && (
       <section className="card-surface p-5">
+
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Cloud bill of quantities</h2>
           <div className="flex gap-1 rounded-lg border border-border p-1">
