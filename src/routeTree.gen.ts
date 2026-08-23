@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AssumptionsRouteImport } from './routes/assumptions'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CalibrationRouteImport } from './routes/calibration'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
@@ -40,6 +41,11 @@ const AssumptionsRoute = AssumptionsRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalibrationRoute = CalibrationRouteImport.update({
+  id: '/calibration',
+  path: '/calibration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/calibration': typeof CalibrationRoute
   '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/calibration': typeof CalibrationRoute
   '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
   '/auth': typeof AuthRoute
+  '/calibration': typeof CalibrationRoute
   '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/calibration'
     | '/compare'
     | '/environments'
     | '/infrastructure'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/calibration'
     | '/compare'
     | '/environments'
     | '/infrastructure'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/assumptions'
     | '/auth'
+    | '/calibration'
     | '/compare'
     | '/environments'
     | '/infrastructure'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AssumptionsRoute: typeof AssumptionsRoute
   AuthRoute: typeof AuthRoute
+  CalibrationRoute: typeof CalibrationRoute
   CompareRoute: typeof CompareRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
   InfrastructureRoute: typeof InfrastructureRoute
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calibration': {
+      id: '/calibration'
+      path: '/calibration'
+      fullPath: '/calibration'
+      preLoaderRoute: typeof CalibrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AssumptionsRoute: AssumptionsRoute,
   AuthRoute: AuthRoute,
+  CalibrationRoute: CalibrationRoute,
   CompareRoute: CompareRoute,
   EnvironmentsRoute: EnvironmentsRoute,
   InfrastructureRoute: InfrastructureRoute,
