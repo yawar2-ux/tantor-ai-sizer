@@ -30,7 +30,7 @@ const extras = [
 /** Sales sees the client-facing results and exports only. */
 const SALES_ALLOWED = new Set(["/", "/results", "/scenarios", "/compare"]);
 
-function NavItem({ to, label, step, onNavigate }: { to: string; label: string; step?: number; onNavigate?: () => void }) {
+function NavItem({ to, label, step, onNavigate }: { to: string; label: string; step?: number | undefined; onNavigate?: (() => void) | undefined }) {
   return (
     <Link
       to={to}
@@ -53,7 +53,7 @@ function NavItem({ to, label, step, onNavigate }: { to: string; label: string; s
   );
 }
 
-function NavBody({ onNavigate }: { onNavigate?: () => void }) {
+function NavBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { presenting, toggle } = usePresentation();
   const { user, signOut } = useAuth();
   const { isSales, isAdmin } = useRole();
