@@ -12,7 +12,9 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ScenarioProvider } from "@/state/scenario";
+import { PresentationProvider } from "@/state/presentation";
 import { AppShell } from "@/components/layout/AppShell";
+
 
 function NotFoundComponent() {
   return (
