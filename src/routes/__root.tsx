@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ScenarioProvider } from "@/state/scenario";
 import { PresentationProvider } from "@/state/presentation";
 import { AppShell } from "@/components/layout/AppShell";
+import { AuthGate } from "@/components/auth/AuthGate";
 
 
 function NotFoundComponent() {
