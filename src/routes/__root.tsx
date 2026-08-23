@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ScenarioProvider } from "@/state/scenario";
 import { PresentationProvider } from "@/state/presentation";
 import { AppShell } from "@/components/layout/AppShell";
+import { AuthGate } from "@/components/auth/AuthGate";
 
 
 function NotFoundComponent() {
@@ -139,10 +140,12 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <PresentationProvider>
         <ScenarioProvider>
-          <AppShell>
-            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-            <Outlet />
-          </AppShell>
+          <AuthGate>
+            <AppShell>
+              {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+              <Outlet />
+            </AppShell>
+          </AuthGate>
         </ScenarioProvider>
       </PresentationProvider>
     </QueryClientProvider>

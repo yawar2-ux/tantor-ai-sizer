@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { usePresentation } from "@/state/presentation";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
+import { useServerFn } from "@tanstack/react-start";
+import { pendingCount } from "@/lib/approvals.functions";
 
 import tantorLogo from "/tantor-logo-reversed.svg";
 
@@ -25,12 +27,25 @@ const extras = [
   { to: "/assumptions", label: "Assumptions" },
   { to: "/calibration", label: "Calibration" },
   { to: "/admin", label: "Admin" },
+  { to: "/approvals", label: "Approvals" },
 ];
 
 /** Sales sees the client-facing results and exports only. */
 const SALES_ALLOWED = new Set(["/", "/results", "/scenarios", "/compare"]);
 
-function NavItem({ to, label, step, onNavigate }: { to: string; label: string; step?: number | undefined; onNavigate?: (() => void) | undefined }) {
+function NavItem({
+  to,
+  label,
+  step,
+  badge,
+  onNavigate,
+}: {
+  to: string;
+  label: string;
+  step?: number | undefined;
+  badge?: number | undefined;
+  onNavigate?: (() => void) | undefined;
+}) {
   return (
     <Link
       to={to}
@@ -49,6 +64,11 @@ function NavItem({ to, label, step, onNavigate }: { to: string; label: string; s
         </span>
       )}
       <span className={cn("font-heading", step === undefined && "pl-9")}>{label}</span>
+      {badge !== undefined && badge > 0 && (
+        <span className="ml-auto rounded-full bg-rose px-2 py-0.5 font-heading text-[10px] font-semibold text-rose-foreground">
+          {badge}
+        </span>
+      )}
     </Link>
   );
 }
@@ -56,10 +76,26 @@ function NavItem({ to, label, step, onNavigate }: { to: string; label: string; s
 function NavBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { presenting, toggle } = usePresentation();
   const { user, signOut } = useAuth();
-  const { isSales } = useRole();
+  const { isSales, isAdmin } = useRole();
+  const countPending = useServerFn(pendingCount);
+  const [pending, setPending] = useState(0);
+
+  const refreshPending = useCallback(() => {
+    if (!isAdmin) return;
+    countPending()
+      .then((r) => setPending(r.pending))
+      .catch(() => setPending(0));
+  }, [isAdmin, countPending]);
+
+  useEffect(() => {
+    refreshPending();
+    const onEvent = (e: Event) => setPending((e as CustomEvent<number>).detail ?? 0);
+    window.addEventListener("tantor:pending", onEvent);
+    return () => window.removeEventListener("tantor:pending", onEvent);
+  }, [refreshPending]);
 
   const visible = (to: string) => (isSales ? SALES_ALLOWED.has(to) : true);
-  const extrasVisible = extras.filter((e) => visible(e.to));
+  const extrasVisible = extras.filter((e) => visible(e.to) && (e.to !== "/approvals" || isAdmin));
 
   return (
     <>
@@ -82,7 +118,12 @@ function NavBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
           <div className="my-5 h-px bg-brand-foreground/15" />
           <nav className="flex flex-col gap-1">
             {extrasVisible.map((s) => (
-              <NavItem key={s.to} {...s} onNavigate={onNavigate} />
+              <NavItem
+                key={s.to}
+                {...s}
+                badge={s.to === "/admin" || s.to === "/approvals" ? pending : undefined}
+                onNavigate={onNavigate}
+              />
             ))}
           </nav>
         </>
