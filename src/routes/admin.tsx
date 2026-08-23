@@ -319,7 +319,6 @@ function RoleAdmin() {
       </form>
       {msg && <p className="mt-3 text-sm text-rose">{msg}</p>}
 
-      {(
         <table className="mt-4 w-full">
           <thead>
             <tr className="border-b border-border">
@@ -355,7 +354,6 @@ function RoleAdmin() {
             ))}
           </tbody>
         </table>
-      )}
     </section>
   );
 }
