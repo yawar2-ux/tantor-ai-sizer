@@ -12,11 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AssumptionsRouteImport } from './routes/assumptions'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
 import { Route as ModelPlatformRouteImport } from './routes/model-platform'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as ScenariosRouteImport } from './routes/scenarios'
 import { Route as WorkloadRouteImport } from './routes/workload'
+import { Route as ShareTokenRouteImport } from './routes/share.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,6 +35,16 @@ const AdminRoute = AdminRouteImport.update({
 const AssumptionsRoute = AssumptionsRouteImport.update({
   id: '/assumptions',
   path: '/assumptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnvironmentsRoute = EnvironmentsRouteImport.update({
@@ -53,9 +67,19 @@ const ResultsRoute = ResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosRoute = ScenariosRouteImport.update({
+  id: '/scenarios',
+  path: '/scenarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkloadRoute = WorkloadRouteImport.update({
   id: '/workload',
   path: '/workload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShareTokenRoute = ShareTokenRouteImport.update({
+  id: '/share/$token',
+  path: '/share/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -63,32 +87,44 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
+  '/share/$token': typeof ShareTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
+  '/share/$token': typeof ShareTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/assumptions': typeof AssumptionsRoute
+  '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/environments': typeof EnvironmentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/model-platform': typeof ModelPlatformRoute
   '/results': typeof ResultsRoute
+  '/scenarios': typeof ScenariosRoute
   '/workload': typeof WorkloadRoute
+  '/share/$token': typeof ShareTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,42 +132,58 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
+    | '/share/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
+    | '/share/$token'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/assumptions'
+    | '/auth'
+    | '/compare'
     | '/environments'
     | '/infrastructure'
     | '/model-platform'
     | '/results'
+    | '/scenarios'
     | '/workload'
+    | '/share/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   AssumptionsRoute: typeof AssumptionsRoute
+  AuthRoute: typeof AuthRoute
+  CompareRoute: typeof CompareRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
   InfrastructureRoute: typeof InfrastructureRoute
   ModelPlatformRoute: typeof ModelPlatformRoute
   ResultsRoute: typeof ResultsRoute
+  ScenariosRoute: typeof ScenariosRoute
   WorkloadRoute: typeof WorkloadRoute
+  ShareTokenRoute: typeof ShareTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -155,6 +207,20 @@ declare module '@tanstack/react-router' {
       path: '/assumptions'
       fullPath: '/assumptions'
       preLoaderRoute: typeof AssumptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/environments': {
@@ -185,11 +251,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios': {
+      id: '/scenarios'
+      path: '/scenarios'
+      fullPath: '/scenarios'
+      preLoaderRoute: typeof ScenariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workload': {
       id: '/workload'
       path: '/workload'
       fullPath: '/workload'
       preLoaderRoute: typeof WorkloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/share/$token': {
+      id: '/share/$token'
+      path: '/share/$token'
+      fullPath: '/share/$token'
+      preLoaderRoute: typeof ShareTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -199,11 +279,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AssumptionsRoute: AssumptionsRoute,
+  AuthRoute: AuthRoute,
+  CompareRoute: CompareRoute,
   EnvironmentsRoute: EnvironmentsRoute,
   InfrastructureRoute: InfrastructureRoute,
   ModelPlatformRoute: ModelPlatformRoute,
   ResultsRoute: ResultsRoute,
+  ScenariosRoute: ScenariosRoute,
   WorkloadRoute: WorkloadRoute,
+  ShareTokenRoute: ShareTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

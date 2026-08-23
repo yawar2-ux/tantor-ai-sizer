@@ -2,8 +2,15 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useScenario } from "@/state/scenario";
+import { usePresentation } from "@/state/presentation";
 import { inrLakh, inrPlain, num } from "@/lib/format";
 import { exportExcel, exportScenarioJson } from "@/lib/export";
+import {
+  BreakEvenPanel,
+  PhasedPanel,
+  RackPowerPanel,
+  SensitivityPanel,
+} from "@/components/results/AnalysisPanels";
 import {
   PROVIDERS,
   PROVIDER_LABEL,
@@ -11,6 +18,7 @@ import {
   type EnvName,
   type Provider,
 } from "@/engine";
+
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -39,6 +47,8 @@ function crore(lakh: number) {
 
 function Results() {
   const { scenario, result, update } = useScenario();
+  const { presenting } = usePresentation();
+
   const { cost, cloud, environments, sizing, model, gpu, precision, template } = result;
   const [tab, setTab] = useState<Provider>(cloud.bestProvider);
 
@@ -143,12 +153,15 @@ function Results() {
                   ))}
                 </select>
                 <p className="mt-2 text-xs text-muted-foreground">{line.regionNote}</p>
-                <p className="numeral mt-2 text-sm font-semibold text-brand">
-                  {inrPlain(line.inrPerGpuHr, 2)} per GPU-hour
-                  <span className="ml-2 text-[11px] font-normal text-muted-foreground">
-                    list ${line.usdPerGpuHr.toFixed(2)}
-                  </span>
-                </p>
+                {!presenting && (
+                  <p className="numeral mt-2 text-sm font-semibold text-brand">
+                    {inrPlain(line.inrPerGpuHr, 2)} per GPU-hour
+                    <span className="ml-2 text-[11px] font-normal text-muted-foreground">
+                      list ${line.usdPerGpuHr.toFixed(2)}
+                    </span>
+                  </p>
+                )}
+
               </div>
             );
           })}
@@ -177,15 +190,27 @@ function Results() {
             );
           })}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          Cloud lines are committed-use estimates at each provider&apos;s selected region multiplier, converted at{" "}
-          {scenario.rates.fx} INR per USD.
-        </p>
+        {!presenting && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Cloud lines are committed-use estimates at each provider&apos;s selected region multiplier, converted at{" "}
+            {scenario.rates.fx} INR per USD.
+          </p>
+        )}
+
       </section>
 
+      <SensitivityPanel scenario={scenario} />
+      <BreakEvenPanel scenario={scenario} />
+      <RackPowerPanel result={result} />
+      <PhasedPanel result={result} hideMoney={presenting} />
+
+
+
       <div className="grid gap-5 xl:grid-cols-2">
+        {!presenting && (
         <section className="card-surface p-5">
           <h2 className="mb-3 text-lg font-semibold">On-premise cost build-up</h2>
+
           <table className="w-full">
             <tbody>
               {buildUp.map(([k, v]) => (
@@ -219,6 +244,8 @@ function Results() {
             </tbody>
           </table>
         </section>
+        )}
+
 
         <section className="card-surface p-5">
           <h2 className="mb-3 text-lg font-semibold">Bill of materials summary</h2>
@@ -299,7 +326,9 @@ function Results() {
         </table>
       </section>
 
+      {!presenting && (
       <section className="card-surface p-5">
+
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Cloud bill of quantities</h2>
           <div className="flex gap-1 rounded-lg border border-border p-1">
@@ -388,6 +417,8 @@ function Results() {
           {crore(boq.tco3L)}. USD list rates are a secondary reference only; quote the INR figures.
         </p>
       </section>
+      )}
+
 
       <section className="card-surface p-5">
         <h2 className="mb-3 text-lg font-semibold">Sovereignty and risk</h2>

@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      scenario_changes: {
+        Row: {
+          created_at: string
+          field: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          scenario_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          field: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          scenario_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          field?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          scenario_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scenario_changes_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scenarios: {
+        Row: {
+          client: string
+          created_at: string
+          data: Json
+          id: string
+          is_shared: boolean
+          opportunity: string
+          round: string
+          share_token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client?: string
+          created_at?: string
+          data: Json
+          id?: string
+          is_shared?: boolean
+          opportunity?: string
+          round?: string
+          share_token?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client?: string
+          created_at?: string
+          data?: Json
+          id?: string
+          is_shared?: boolean
+          opportunity?: string
+          round?: string
+          share_token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
