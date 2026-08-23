@@ -191,6 +191,13 @@ function Results() {
         </p>
       </section>
 
+      <SensitivityPanel scenario={scenario} />
+      <BreakEvenPanel scenario={scenario} />
+      <RackPowerPanel result={result} />
+      <PhasedPanel result={result} hideMoney={presenting} />
+
+
+
       <div className="grid gap-5 xl:grid-cols-2">
         {!presenting && (
         <section className="card-surface p-5">
