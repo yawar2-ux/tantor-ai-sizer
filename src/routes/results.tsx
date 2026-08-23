@@ -192,8 +192,10 @@ function Results() {
       </section>
 
       <div className="grid gap-5 xl:grid-cols-2">
+        {!presenting && (
         <section className="card-surface p-5">
           <h2 className="mb-3 text-lg font-semibold">On-premise cost build-up</h2>
+
           <table className="w-full">
             <tbody>
               {buildUp.map(([k, v]) => (
