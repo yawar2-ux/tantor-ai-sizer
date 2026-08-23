@@ -396,6 +396,8 @@ function Results() {
           {crore(boq.tco3L)}. USD list rates are a secondary reference only; quote the INR figures.
         </p>
       </section>
+      )}
+
 
       <section className="card-surface p-5">
         <h2 className="mb-3 text-lg font-semibold">Sovereignty and risk</h2>
