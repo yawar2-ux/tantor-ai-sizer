@@ -34,7 +34,7 @@ const td = "px-3 py-2 text-sm";
 const ENVS: EnvName[] = ["Prod", "Dev", "UAT", "DR"];
 
 function crore(lakh: number) {
-  return `${inrLakh(lakh)} (${num(lakh / 100, 2)} Cr)`;
+  return `₹${num(lakh, 2)} L (₹${num(lakh / 100, 2)} Cr)`;
 }
 
 function Results() {
