@@ -153,12 +153,15 @@ function Results() {
                   ))}
                 </select>
                 <p className="mt-2 text-xs text-muted-foreground">{line.regionNote}</p>
-                <p className="numeral mt-2 text-sm font-semibold text-brand">
-                  {inrPlain(line.inrPerGpuHr, 2)} per GPU-hour
-                  <span className="ml-2 text-[11px] font-normal text-muted-foreground">
-                    list ${line.usdPerGpuHr.toFixed(2)}
-                  </span>
-                </p>
+                {!presenting && (
+                  <p className="numeral mt-2 text-sm font-semibold text-brand">
+                    {inrPlain(line.inrPerGpuHr, 2)} per GPU-hour
+                    <span className="ml-2 text-[11px] font-normal text-muted-foreground">
+                      list ${line.usdPerGpuHr.toFixed(2)}
+                    </span>
+                  </p>
+                )}
+
               </div>
             );
           })}
