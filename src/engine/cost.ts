@@ -64,14 +64,24 @@ export function computeCost(
       rates.tariff) /
     1e8;
 
+  const discountL = capexL * (commercial.discountPct / 100);
+  const capexNetL = capexL - discountL;
+  const gstL = capexNetL * (commercial.gstPct / 100);
+  const capexPayableL = capexNetL + gstL;
+
+  const licenceLyr = commercial.licenceLyr;
+  const supportLyr = commercial.supportLyr;
+
   const opexLyr =
     powerLyr +
     hwL * rates.amcPct +
     rates.manpowerL +
     rates.facilitiesL +
+    licenceLyr +
+    supportLyr +
     (rates.nvaieLperGpu * env.totalPhysicalGpus + rates.k8sLicLperNode * env.totalNodes);
 
-  const tco3L = capexL + 3 * opexLyr;
+  const tco3L = capexPayableL + 3 * opexLyr;
   const tokensYrM =
     (((totals.prefillTot + totals.decodeTot) / rates.peakFactor) * rates.utilisation * 3600 * 8760) / 1e6;
   const perMTok = tokensYrM > 0 ? ((tco3L / 3) * 1e5) / tokensYrM : 0;
@@ -88,10 +98,17 @@ export function computeCost(
     contingencyL,
     implOneL: rates.implOneL,
     capexL,
+    discountL,
+    capexNetL,
+    gstL,
+    capexPayableL,
+    licenceLyr,
+    supportLyr,
     powerLyr,
     opexLyr,
     tco3L,
     tokensYrM,
     perMTok,
   };
+
 }
