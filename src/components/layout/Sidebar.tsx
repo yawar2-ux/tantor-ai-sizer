@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
+import tantorLogo from "/tantor-logo-reversed.svg";
+
 const steps = [
   { to: "/", label: "Home" },
   { to: "/workload", label: "Workload", step: 1 },
@@ -40,10 +42,12 @@ function NavItem({ to, label, step }: { to: string; label: string; step?: number
 export function Sidebar() {
   return (
     <aside className="flex w-64 shrink-0 flex-col bg-brand px-4 py-5">
-      {/* Logo slot: 140x36 px, files to be supplied */}
-      <div className="mb-8 flex h-9 w-[140px] items-center rounded-md border border-dashed border-brand-foreground/30 px-2 text-[10px] uppercase tracking-widest text-brand-foreground/60">
-        Tantor logo
-      </div>
+      {/* Tantor wordmark — reversed (white) variant for the dark sidebar */}
+      <img
+        src={tantorLogo}
+        alt="Tantor"
+        className="mb-8 h-9 w-[140px] shrink-0 object-contain"
+      />
 
       <nav className="flex flex-col gap-1">
         {steps.map((s) => (
