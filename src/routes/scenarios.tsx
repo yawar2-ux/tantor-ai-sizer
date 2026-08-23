@@ -36,7 +36,7 @@ const field =
 
 function ScenariosPage() {
   const { user, loading } = useAuth();
-  const { scenario, update } = useScenario();
+  const { scenario, update, setSavedId } = useScenario();
   const [rows, setRows] = useState<SavedScenario[]>([]);
   const [client, setClient] = useState("");
   const [opportunity, setOpportunity] = useState("");
@@ -84,6 +84,7 @@ function ScenariosPage() {
       } else {
         const created = await createScenario({ client, opportunity, round, data: scenario });
         setActiveId(created.id);
+        setSavedId(created.id);
         setMsg("Scenario saved.");
       }
       await refresh();
@@ -95,6 +96,7 @@ function ScenariosPage() {
   const load = async (row: SavedScenario) => {
     update(row.data);
     setActiveId(row.id);
+    setSavedId(row.id);
     setClient(row.client);
     setOpportunity(row.opportunity);
     setRound(row.round);

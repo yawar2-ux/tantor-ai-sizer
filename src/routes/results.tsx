@@ -6,6 +6,7 @@ import { usePresentation } from "@/state/presentation";
 import { inrLakh, inrPlain, num } from "@/lib/format";
 import { exportExcel, exportScenarioJson } from "@/lib/export";
 import { logSizing } from "@/lib/analytics";
+import { SharePanel } from "@/components/results/SharePanel";
 import {
   BreakEvenPanel,
   PhasedPanel,
@@ -94,37 +95,12 @@ function Results() {
     scenario.rates.nvaieLperGpu * environments.totalPhysicalGpus +
     scenario.rates.k8sLicLperNode * environments.totalNodes;
 
-  const sovereignty: [string, string][] = [
-    [
-      "RBI outsourcing burden",
-      "On-premise keeps the workload inside the regulated entity. Cloud triggers material outsourcing review, exit plans and audit rights in every contract.",
-    ],
-    [
-      "DPDP posture",
-      "On-premise makes the bank the sole data fiduciary. Cloud adds a processor relationship with breach notification and purpose-limitation obligations to negotiate.",
-    ],
-    [
-      "Data residency",
-      `On-premise data stays in the client data centre. Cloud residency depends on the region chosen per provider (${cloud.lines
-        .map((l) => `${PROVIDER_LABEL[l.provider]} ${l.regionId}`)
-        .join(", ")}).`,
-    ],
-    [
-      "Rupee exposure",
-      `On-premise is a rupee capex. Cloud is a USD-denominated run cost converted at ${scenario.rates.fx} INR per USD, so every rupee of the bill moves with the exchange rate.`,
-    ],
-    [
-      "Exit cost",
-      "On-premise exit is asset disposal at residual value. Cloud exit means egress charges, re-platforming and a parallel-run period on both estates.",
-    ],
-  ];
-
   return (
     <div className="space-y-6">
       <PageHeader
         eyebrow="Step 5"
         title="Results"
-        intro="Three-year cost of the Tantor build against public cloud, with the bill of quantities, cloud BOQ and the sovereignty view for the client pack."
+        intro="Three-year cost of the Tantor build against public cloud, with the bill of quantities, cloud BOQ and the client pack comparison."
       />
 
       <div className="flex flex-wrap gap-3">
@@ -135,6 +111,7 @@ function Results() {
         >
           Export Excel pack
         </button>
+        <SharePanel />
         <button
           type="button"
           onClick={() => exportScenarioJson(scenario)}
@@ -182,6 +159,17 @@ function Results() {
             );
           })}
         </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Cloud data residency follows the region selected per provider; on-premise data stays in the client data
+          centre.
+          {!presenting && (
+            <>
+              {" "}
+              Cloud rates are USD-denominated and converted at {scenario.rates.fx} INR per USD, so the rupee bill moves
+              with the exchange rate.
+            </>
+          )}
+        </p>
       </section>
 
       <section className="card-surface p-5">
@@ -464,19 +452,6 @@ function Results() {
       )}
 
 
-      <section className="card-surface p-5">
-        <h2 className="mb-3 text-lg font-semibold">Sovereignty and risk</h2>
-        <table className="w-full">
-          <tbody>
-            {sovereignty.map(([k, v]) => (
-              <tr key={k} className="border-b border-border last:border-0 align-top">
-                <td className={`${td} w-56 font-semibold`}>{k}</td>
-                <td className={`${td} text-muted-foreground`}>{v}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
     </div>
   );
 }
