@@ -321,7 +321,7 @@ function RoleAdmin() {
       {msg && <p className="mt-3 text-sm text-rose">{msg}</p>}
 
       <table className="mt-4 w-full">
-          <thead>
+        <thead>
             <tr className="border-b border-border">
               <th className={th}>Email</th>
               <th className={th}>Role</th>
@@ -335,6 +335,7 @@ function RoleAdmin() {
                   No roles assigned yet.
                 </td>
               </tr>
+            )}
             {rows.map((r) => (
               <tr key={r.id} className="border-b border-border last:border-0">
                 <td className={td}>{r.email ?? r.user_id}</td>
@@ -353,8 +354,8 @@ function RoleAdmin() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+        </tbody>
+      </table>
     </section>
   );
 }
