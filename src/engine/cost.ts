@@ -1,4 +1,4 @@
-import type { Gpu, Rates, Template } from "./types";
+import { DEFAULT_COMMERCIAL, type Commercial, type Gpu, type Rates, type Template } from "./types";
 import type { EnvironmentsResult } from "./environments";
 
 export interface CostResult {
@@ -12,7 +12,18 @@ export interface CostResult {
   installL: number;
   contingencyL: number;
   implOneL: number;
+  /** List capex, before any negotiated discount or GST. */
   capexL: number;
+  /** Rupee value of the negotiated discount, in Lakh. */
+  discountL: number;
+  /** Capex after discount, before GST. */
+  capexNetL: number;
+  /** GST charged on the discounted capex. */
+  gstL: number;
+  /** Cash capex the client pays: net capex plus GST. */
+  capexPayableL: number;
+  licenceLyr: number;
+  supportLyr: number;
   powerLyr: number;
   opexLyr: number;
   tco3L: number;
@@ -27,9 +38,11 @@ export function computeCost(
   rates: Rates,
   fabricRequired: boolean,
   totals: { prefillTot: number; decodeTot: number },
+  commercial: Commercial = DEFAULT_COMMERCIAL,
 ): CostResult {
   const prodNodes = env.envs.find((e) => e.name === "Prod")?.gpuNodes ?? 0;
   const drNodes = env.envs.find((e) => e.name === "DR")?.gpuNodes ?? 0;
+
 
   const chassisL = env.totalGpuNodes * template.priceL;
   const cardsL = env.totalPhysicalGpus * gpu.cardL;
