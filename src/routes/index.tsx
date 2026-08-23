@@ -36,7 +36,7 @@ const steps = [
 const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
 function Home() {
-  const { scenario, update, reset } = useScenario();
+  const { scenario, update, reset, setSavedId } = useScenario();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [recent, setRecent] = useState<SavedScenario[]>([]);
@@ -79,6 +79,7 @@ function Home() {
 
   const openSaved = (row: SavedScenario) => {
     update(row.data);
+    setSavedId(row.id);
     void navigate({ to: "/results" });
   };
 
