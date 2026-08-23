@@ -231,6 +231,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_shared_scenario: {
+        Args: { _token: string }
+        Returns: {
+          client: string
+          created_at: string
+          data: Json
+          id: string
+          is_shared: boolean
+          opportunity: string
+          round: string
+          updated_at: string
+        }[]
+      }
       has_role:
         | {
             Args: {
