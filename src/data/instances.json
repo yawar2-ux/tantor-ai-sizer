@@ -1,40 +1,208 @@
 {
   "aws": {
-    "services": { "type": "m6i.16xlarge", "vcpu": 64 },
+    "services": {
+      "type": "m6i.16xlarge",
+      "vcpu": 64,
+      "ram": "256 GiB",
+      "storage": "EBS gp3, 500 GB",
+      "network": "25 Gbps"
+    },
     "gpus": [
-      { "gpu": "NVIDIA H100 SXM5", "type": "p5.48xlarge", "gpn": 8 },
-      { "gpu": "NVIDIA H200 SXM", "type": "p5e.48xlarge", "gpn": 8 },
-      { "gpu": "NVIDIA B200 SXM", "type": "p6-b200.48xlarge", "gpn": 8 },
-      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "p4d.24xlarge", "gpn": 8 },
-      { "gpu": "NVIDIA L40S PCIe", "type": "g6e.xlarge", "gpn": 1 }
+      {
+        "gpu": "NVIDIA H100 SXM5",
+        "type": "p5.48xlarge",
+        "gpn": 8,
+        "vcpu": 192,
+        "ram": "2,048 GiB",
+        "storage": "8 x 3.84 TB NVMe SSD",
+        "network": "3,200 Gbps EFAv2"
+      },
+      {
+        "gpu": "NVIDIA H200 SXM",
+        "type": "p5e.48xlarge",
+        "gpn": 8,
+        "vcpu": 192,
+        "ram": "2,048 GiB",
+        "storage": "8 x 3.84 TB NVMe SSD",
+        "network": "3,200 Gbps EFAv2"
+      },
+      {
+        "gpu": "NVIDIA B200 SXM",
+        "type": "p6-b200.48xlarge",
+        "gpn": 8,
+        "vcpu": 192,
+        "ram": "2,048 GiB",
+        "storage": "8 x 3.84 TB NVMe SSD",
+        "network": "3,200 Gbps EFAv2"
+      },
+      {
+        "gpu": "NVIDIA A100 SXM4 80GB",
+        "type": "p4d.24xlarge",
+        "gpn": 8,
+        "vcpu": 96,
+        "ram": "1,152 GiB",
+        "storage": "8 x 1 TB NVMe SSD",
+        "network": "400 Gbps EFA"
+      },
+      {
+        "gpu": "NVIDIA L40S PCIe",
+        "type": "g6e.xlarge",
+        "gpn": 1,
+        "vcpu": 4,
+        "ram": "32 GiB",
+        "storage": "250 GB NVMe SSD",
+        "network": "up to 20 Gbps"
+      }
     ]
   },
   "azure": {
-    "services": { "type": "D64s v5", "vcpu": 64 },
+    "services": {
+      "type": "D64s v5",
+      "vcpu": 64,
+      "ram": "256 GiB",
+      "storage": "Premium SSD, 512 GB",
+      "network": "30 Gbps"
+    },
     "gpus": [
-      { "gpu": "NVIDIA H100 SXM5", "type": "ND96isr H100 v5", "gpn": 8 },
-      { "gpu": "NVIDIA H200 SXM", "type": "ND H200 v5", "gpn": 8 },
-      { "gpu": "AMD MI300X", "type": "ND MI300X v5", "gpn": 8 },
-      { "gpu": "NVIDIA A100 PCIe 80GB", "type": "NC96ads A100 v4", "gpn": 4 }
+      {
+        "gpu": "NVIDIA H100 SXM5",
+        "type": "ND96isr H100 v5",
+        "gpn": 8,
+        "vcpu": 96,
+        "ram": "1,900 GiB",
+        "storage": "28 TB local NVMe",
+        "network": "8 x 400 Gbps InfiniBand, 80 Gbps Ethernet"
+      },
+      {
+        "gpu": "NVIDIA H200 SXM",
+        "type": "ND H200 v5",
+        "gpn": 8,
+        "vcpu": 96,
+        "ram": "1,850 GiB",
+        "storage": "28 TB local NVMe",
+        "network": "3,200 Gbps InfiniBand"
+      },
+      {
+        "gpu": "AMD MI300X",
+        "type": "ND MI300X v5",
+        "gpn": 8,
+        "vcpu": 96,
+        "ram": "1,850 GiB",
+        "storage": "8 x 3.5 TB local NVMe",
+        "network": "3,200 Gbps InfiniBand"
+      },
+      {
+        "gpu": "NVIDIA A100 PCIe 80GB",
+        "type": "NC96ads A100 v4",
+        "gpn": 4,
+        "vcpu": 96,
+        "ram": "880 GiB",
+        "storage": "6,400 GB local NVMe",
+        "network": "80 Gbps"
+      }
     ]
   },
   "gcp": {
-    "services": { "type": "n2-standard-64", "vcpu": 64 },
+    "services": {
+      "type": "n2-standard-64",
+      "vcpu": 64,
+      "ram": "256 GB",
+      "storage": "Balanced PD, 500 GB",
+      "network": "32 Gbps"
+    },
     "gpus": [
-      { "gpu": "NVIDIA H100 SXM5", "type": "a3-highgpu-8g", "gpn": 8 },
-      { "gpu": "NVIDIA H200 SXM", "type": "a3-ultragpu-8g", "gpn": 8 },
-      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "a2-ultragpu-8g", "gpn": 8 },
-      { "gpu": "NVIDIA L40S PCIe", "type": "g2-standard-4", "gpn": 1 }
+      {
+        "gpu": "NVIDIA H100 SXM5",
+        "type": "a3-highgpu-8g",
+        "gpn": 8,
+        "vcpu": 208,
+        "ram": "1,872 GB",
+        "storage": "6 TB local SSD",
+        "network": "1,000 Gbps GPUDirect-TCPX"
+      },
+      {
+        "gpu": "NVIDIA H200 SXM",
+        "type": "a3-ultragpu-8g",
+        "gpn": 8,
+        "vcpu": 224,
+        "ram": "2,952 GB",
+        "storage": "12 TB local SSD",
+        "network": "3,200 Gbps RDMA"
+      },
+      {
+        "gpu": "NVIDIA A100 SXM4 80GB",
+        "type": "a2-ultragpu-8g",
+        "gpn": 8,
+        "vcpu": 96,
+        "ram": "1,360 GB",
+        "storage": "3 TB local SSD",
+        "network": "100 Gbps"
+      },
+      {
+        "gpu": "NVIDIA L40S PCIe",
+        "type": "g2-standard-4",
+        "gpn": 1,
+        "vcpu": 4,
+        "ram": "16 GB",
+        "storage": "375 GB local SSD",
+        "network": "10 Gbps"
+      }
     ]
   },
   "oci": {
-    "services": { "type": "VM.Standard.E5.Flex-64", "vcpu": 64 },
+    "services": {
+      "type": "VM.Standard.E5.Flex-64",
+      "vcpu": 64,
+      "ram": "512 GB",
+      "storage": "Block volume, 500 GB",
+      "network": "64 Gbps"
+    },
     "gpus": [
-      { "gpu": "NVIDIA H100 SXM5", "type": "BM.GPU.H100.8", "gpn": 8 },
-      { "gpu": "NVIDIA H200 SXM", "type": "BM.GPU.H200.8", "gpn": 8 },
-      { "gpu": "AMD MI300X", "type": "BM.GPU.MI300X.8", "gpn": 8 },
-      { "gpu": "NVIDIA A100 SXM4 80GB", "type": "BM.GPU.A100-v2.8", "gpn": 8 },
-      { "gpu": "NVIDIA L40S PCIe", "type": "VM.GPU.L40S.1", "gpn": 1 }
+      {
+        "gpu": "NVIDIA H100 SXM5",
+        "type": "BM.GPU.H100.8",
+        "gpn": 8,
+        "vcpu": 112,
+        "ram": "2,048 GB",
+        "storage": "8 x 3.84 TB NVMe",
+        "network": "8 x 400 Gbps RoCE v2"
+      },
+      {
+        "gpu": "NVIDIA H200 SXM",
+        "type": "BM.GPU.H200.8",
+        "gpn": 8,
+        "vcpu": 112,
+        "ram": "3,072 GB",
+        "storage": "8 x 3.84 TB NVMe",
+        "network": "3,200 Gbps RoCE v2"
+      },
+      {
+        "gpu": "AMD MI300X",
+        "type": "BM.GPU.MI300X.8",
+        "gpn": 8,
+        "vcpu": 112,
+        "ram": "2,048 GB",
+        "storage": "8 x 3.84 TB NVMe",
+        "network": "3,200 Gbps RoCE v2"
+      },
+      {
+        "gpu": "NVIDIA A100 SXM4 80GB",
+        "type": "BM.GPU.A100-v2.8",
+        "gpn": 8,
+        "vcpu": 128,
+        "ram": "2,048 GB",
+        "storage": "27.2 TB NVMe",
+        "network": "1,600 Gbps RoCE v2"
+      },
+      {
+        "gpu": "NVIDIA L40S PCIe",
+        "type": "VM.GPU.L40S.1",
+        "gpn": 1,
+        "vcpu": 32,
+        "ram": "384 GB",
+        "storage": "3.84 TB NVMe",
+        "network": "24 Gbps"
+      }
     ]
   }
 }
