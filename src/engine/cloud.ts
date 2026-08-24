@@ -20,10 +20,19 @@ export interface Region {
   india?: boolean;
 }
 
-export interface InstanceMap {
-  services: { type: string; vcpu: number };
-  gpus: { gpu: string; type: string; gpn: number }[];
+export interface InstanceSpec {
+  type: string;
+  vcpu: number;
+  ram?: string;
+  storage?: string;
+  network?: string;
 }
+
+export interface InstanceMap {
+  services: InstanceSpec;
+  gpus: (InstanceSpec & { gpu: string; gpn: number })[];
+}
+
 
 export const REGIONS = regionsData as Record<Provider, Region[]>;
 export const INSTANCES = instancesData as Record<Provider, InstanceMap>;
