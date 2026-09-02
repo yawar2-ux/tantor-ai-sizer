@@ -132,6 +132,12 @@ function Environments() {
             hint="Adds spare GPUs and duplicates the services tier in DR."
           />
           <Toggle
+            label="Production HA replica"
+            checked={scenario.haEnabled ?? true}
+            onChange={(v) => update({ haEnabled: v })}
+            hint={`Adds one spare replica (${sizing.replicaGpus} GPU${sizing.replicaGpus === 1 ? "" : "s"}) to production. Turn off for a pilot.`}
+          />
+          <Toggle
             label="GPU virtualisation for Dev and UAT"
             checked={scenario.virtualisation}
             onChange={(v) => update({ virtualisation: v })}

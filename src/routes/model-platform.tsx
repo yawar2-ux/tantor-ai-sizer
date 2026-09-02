@@ -134,6 +134,22 @@ function ModelPlatform() {
               {precision.bytes} bytes per parameter, throughput factor {precision.tput}
             </p>
           </div>
+          <div>
+            <label className={labelCls}>Ancillary models</label>
+            <select
+              className={field}
+              value={scenario.ancillaryMode ?? "none"}
+              onChange={(e) => update({ ancillaryMode: e.target.value as "none" | "mig" | "l40s" })}
+            >
+              <option value="none">None</option>
+              <option value="mig">Shared MIG slice</option>
+              <option value="l40s">Dedicated L40S</option>
+            </select>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Embedding, rerank and guardrail models. Dedicated adds one L40S per environment as a separate BOM line;
+              a shared MIG slice and None add no cards.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -166,7 +182,12 @@ function ModelPlatform() {
         </div>
 
         <div className="mt-5">
-          <h3 className="mb-2 text-sm font-semibold">Scaling chain</h3>
+          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-sm font-semibold">Scaling chain</h3>
+            <span className="numeral rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] text-muted-foreground">
+              {replicaLabel}
+            </span>
+          </div>
           <ol className="flex flex-wrap items-center gap-2">
             {chain.map(([label, value], i) => {
               const last = i === chain.length - 1;
