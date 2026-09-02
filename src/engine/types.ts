@@ -51,9 +51,7 @@ export interface Rates {
   peakFactor: number;
   servingEff: number;
   headroom: number;
-  ancillary: number;
   schedOverhead: number;
-  haGpus: number;
   fx: number;
   tariff: number;
   utilisation: number;
@@ -110,6 +108,8 @@ export interface UseCase {
   outUnit?: string | undefined;
 }
 
+export type AncillaryMode = "none" | "mig" | "l40s";
+
 export interface Scenario {
   useCases: UseCase[];
   model: string;
@@ -127,6 +127,10 @@ export interface Scenario {
   uatPct: number;
   drPct: number;
   drHA: boolean;
+  /** Add one spare replica in production. */
+  haEnabled: boolean;
+  /** Ancillary (non-LLM) models: none, a shared MIG slice, or dedicated L40S per environment. */
+  ancillaryMode: AncillaryMode;
   virtualisation: boolean;
   cloudRegions?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
   instanceOverrides?: Partial<Record<"aws" | "azure" | "gcp" | "oci", string>> | undefined;
