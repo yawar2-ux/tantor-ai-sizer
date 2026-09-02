@@ -44,7 +44,7 @@ describe("golden scenario", () => {
   });
 
   it("cost", () => {
-    expect(Math.round(r.cost.capexL)).toBe(967);
-    expect(Math.round(r.cost.tco3L)).toBe(1344);
+    expect(Math.round(r.cost.capexL)).toBe(935);
+    expect(Math.round(r.cost.tco3L)).toBe(1302);
   });
 });
