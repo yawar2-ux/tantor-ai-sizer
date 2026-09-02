@@ -51,7 +51,6 @@ export interface Rates {
   peakFactor: number;
   servingEff: number;
   headroom: number;
-  ancillary: number;
   schedOverhead: number;
   haGpus: number;
   fx: number;
