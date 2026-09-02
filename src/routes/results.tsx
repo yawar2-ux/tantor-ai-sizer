@@ -86,6 +86,9 @@ function Results() {
     ["GPU cards", cost.cardsL],
     ["Services nodes", cost.servicesL],
     ["Storage appliance", cost.storageL],
+    ...(cost.ancillaryGpus > 0
+      ? ([[`Ancillary models (${cost.ancillaryGpus} x L40S)`, cost.ancillaryL]] as [string, number][])
+      : []),
     ["Network (ethernet + fabric)", cost.ethernetL + cost.fabricL],
     ["Installation", cost.installL],
     ["Implementation", cost.implOneL],

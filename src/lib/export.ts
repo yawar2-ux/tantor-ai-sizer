@@ -157,6 +157,7 @@ export function exportExcel(scenario: Scenario, result: ScenarioResult) {
     ["GPU cards", Number(cost.cardsL.toFixed(2))],
     ["Services nodes", Number(cost.servicesL.toFixed(2))],
     ["Storage appliance", Number(cost.storageL.toFixed(2))],
+    ["Ancillary models (L40S)", Number(cost.ancillaryL.toFixed(2))],
     ["Ethernet", Number(cost.ethernetL.toFixed(2))],
     ["Fabric", Number(cost.fabricL.toFixed(2))],
     ["Installation", Number(cost.installL.toFixed(2))],
