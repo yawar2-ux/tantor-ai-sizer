@@ -20,8 +20,10 @@ export interface SizingResult {
   throughputGpus: number;
   base: number;
   constraint: "Memory" | "Decode" | "Prefill";
-  /** Base plus scheduling overhead, rounded up to whole replicas. */
+  /** Base plus fleet fragmentation allowance, rounded up to whole replicas. Equals base when the allowance is 0. */
   withSched: number;
+  /** True when a non-zero fragmentation allowance changed the count. */
+  schedApplied: boolean;
   haEnabled: boolean;
   prodGpus: number;
   ttftMs: number;
@@ -63,8 +65,9 @@ export function computeSizing(
   const constraint: SizingResult["constraint"] =
     throughputGpus > replicaGpus ? (decGpus >= preGpus ? "Decode" : "Prefill") : "Memory";
 
-  // 5. Scheduling overhead, the only rounding after base.
-  const withSched = ceilTo(base * (1 + rates.schedOverhead), replicaGpus);
+  // 5. Fleet fragmentation allowance, skipped entirely when zero.
+  const schedApplied = (rates.schedOverhead ?? 0) > 0;
+  const withSched = schedApplied ? ceilTo(base * (1 + rates.schedOverhead), replicaGpus) : base;
 
   // 6. HA adds one replica, never one GPU.
   const prodGpus = withSched + (haEnabled ? replicaGpus : 0);
@@ -85,6 +88,7 @@ export function computeSizing(
     base,
     constraint,
     withSched,
+    schedApplied,
     haEnabled,
     prodGpus,
     ttftMs,

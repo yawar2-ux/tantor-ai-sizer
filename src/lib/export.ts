@@ -91,7 +91,7 @@ export function exportExcel(scenario: Scenario, result: ScenarioResult) {
     ["Throughput GPUs (whole replicas)", sizing.throughputGpus],
     ["Binding constraint", sizing.constraint],
     ["Base", sizing.base],
-    ["With scheduling", sizing.withSched],
+    ...(sizing.schedApplied ? [["Fleet fragmentation allowance applied", sizing.withSched] as Row] : []),
     ["HA replica", sizing.haEnabled ? "Yes" : "No"],
     ["Production", sizing.prodGpus],
     ["TTFT ms", Math.round(sizing.ttftMs)],
