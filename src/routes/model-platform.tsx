@@ -66,12 +66,14 @@ function ModelPlatform() {
   const { sizing, model, gpu, precision } = result;
 
   const chain = [
+    ["Memory floor (replica)", sizing.replicaGpus],
+    ["Throughput with headroom", sizing.throughputGpus],
     ["Base", sizing.base],
-    ["+ Headroom", sizing.withHead],
-    ["+ Ancillary", sizing.withAnc],
     ["+ Scheduling", sizing.withSched],
-    ["+ HA (production)", sizing.prodGpus],
+    [sizing.haEnabled ? "+ HA replica" : "No HA replica", sizing.prodGpus],
   ] as const;
+
+  const replicaLabel = `1 replica = ${sizing.replicaGpus} x ${gpu.name.replace(/^NVIDIA |^AMD /, "")}`;
 
   const remediation = "Try a faster GPU, lower precision, fewer streams per GPU, or a shorter context.";
 
