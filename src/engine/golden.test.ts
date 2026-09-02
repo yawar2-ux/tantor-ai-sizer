@@ -12,10 +12,10 @@ describe("golden scenario", () => {
 
   it("sizing chain", () => {
     expect(r.sizing.constraint).toBe("Memory");
+    expect(r.sizing.replicaGpus).toBe(2);
+    expect(r.sizing.throughputGpus).toBe(2);
     expect(r.sizing.base).toBe(2);
-    expect(r.sizing.withHead).toBe(3);
-    expect(r.sizing.withAnc).toBe(4);
-    expect(r.sizing.withSched).toBe(5);
+    expect(r.sizing.withSched).toBe(4);
     expect(r.sizing.prodGpus).toBe(6);
   });
 
