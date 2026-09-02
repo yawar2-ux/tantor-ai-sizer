@@ -4,7 +4,6 @@
   "servingEff": 0.7,
   "headroom": 0.25,
   "schedOverhead": 0.05,
-  "haGpus": 1,
   "fx": 88,
   "tariff": 8.5,
   "utilisation": 0.6,

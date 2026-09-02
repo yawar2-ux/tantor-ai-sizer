@@ -26,6 +26,8 @@ export interface EnvOptions {
   drPct: number;
   drHA: boolean;
   virtualisation: boolean;
+  /** GPUs in one model replica; DR HA adds a replica, not a single GPU. */
+  replicaGpus: number;
 }
 
 export interface VmRow {
@@ -61,7 +63,7 @@ export function computeEnvironments(
     Prod: prodGpus,
     Dev: Math.ceil(withSched * opts.devPct),
     UAT: Math.ceil(withSched * opts.uatPct),
-    DR: Math.ceil(withSched * opts.drPct) + (opts.drHA ? rates.haGpus : 0),
+    DR: Math.ceil(withSched * opts.drPct) + (opts.drHA ? opts.replicaGpus : 0),
   };
 
   const physical: Record<EnvName, number> = {

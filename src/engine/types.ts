@@ -52,7 +52,6 @@ export interface Rates {
   servingEff: number;
   headroom: number;
   schedOverhead: number;
-  haGpus: number;
   fx: number;
   tariff: number;
   utilisation: number;
