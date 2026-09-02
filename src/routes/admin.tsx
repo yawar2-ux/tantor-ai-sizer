@@ -36,7 +36,7 @@ const RATE_GROUPS: { title: string; keys: [keyof Rates, string][] }[] = [
       ["peakFactor", "Peak factor"],
       ["servingEff", "Serving efficiency"],
       ["headroom", "Headroom"],
-      ["schedOverhead", "Scheduling overhead"],
+      ["schedOverhead", "Fleet fragmentation allowance (apply only above ~32 GPUs)"],
       ["calibK", "Calibration K"],
       ["streamsPerGpu", "Streams per GPU"],
       ["concRatio", "Concurrency ratio"],

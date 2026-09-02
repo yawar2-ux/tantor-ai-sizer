@@ -69,9 +69,9 @@ function ModelPlatform() {
     ["Memory floor (replica)", sizing.replicaGpus],
     ["Throughput with headroom", sizing.throughputGpus],
     ["Base", sizing.base],
-    ["+ Scheduling", sizing.withSched],
+    ...(sizing.schedApplied ? ([["+ Fragmentation allowance", sizing.withSched]] as const) : []),
     [sizing.haEnabled ? "+ HA replica" : "No HA replica", sizing.prodGpus],
-  ] as const;
+  ] as [string, number][];
 
   const replicaLabel = `1 replica = ${sizing.replicaGpus} x ${gpu.name.replace(/^NVIDIA |^AMD /, "")}`;
 

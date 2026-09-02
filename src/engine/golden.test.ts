@@ -15,8 +15,9 @@ describe("golden scenario", () => {
     expect(r.sizing.replicaGpus).toBe(2);
     expect(r.sizing.throughputGpus).toBe(2);
     expect(r.sizing.base).toBe(2);
-    expect(r.sizing.withSched).toBe(4);
-    expect(r.sizing.prodGpus).toBe(6);
+    expect(r.sizing.schedApplied).toBe(false);
+    expect(r.sizing.withSched).toBe(2);
+    expect(r.sizing.prodGpus).toBe(4);
   });
 
   it("latency", () => {
@@ -44,7 +45,7 @@ describe("golden scenario", () => {
   });
 
   it("cost", () => {
-    expect(Math.round(r.cost.capexL)).toBe(935);
-    expect(Math.round(r.cost.tco3L)).toBe(1302);
+    expect(Math.round(r.cost.capexL)).toBe(805);
+    expect(Math.round(r.cost.tco3L)).toBe(1135);
   });
 });

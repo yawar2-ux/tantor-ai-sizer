@@ -25,11 +25,16 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
     const raw = typeof window !== "undefined" ? window.localStorage.getItem(STORAGE_KEY) : null;
     if (raw) {
       try {
-        setScenario({ ...defaultScenario(), ...(JSON.parse(raw) as Scenario) });
+        const parsed = JSON.parse(raw) as Scenario;
+        const base = defaultScenario();
+        // Scheduling overhead became an opt-in fragmentation allowance defaulting to 0.
+        const rates = { ...base.rates, ...parsed.rates, schedOverhead: base.rates.schedOverhead };
+        setScenario({ ...base, ...parsed, rates });
       } catch {
         /* ignore malformed local state */
       }
     }
+
     if (typeof window !== "undefined") setSavedIdState(window.localStorage.getItem(SAVED_ID_KEY));
   }, []);
 
