@@ -1,18 +1,28 @@
 import type { Gpu, Model, Precision, Rates } from "./types";
 import type { TokenTotals } from "./tokens";
 
+/** Round `n` up to the nearest multiple of `step` (replica granularity). */
+function ceilTo(n: number, step: number): number {
+  if (step <= 0) return Math.ceil(n);
+  return Math.ceil(n / step) * step;
+}
+
 export interface SizingResult {
   decodeTps: number;
   weights: number;
   kvTot: number;
+  /** GPUs one copy (replica) of the model needs: the memory floor. */
+  replicaGpus: number;
   memGpus: number;
   decGpus: number;
   preGpus: number;
+  /** max(decode, prefill) rounded up to whole replicas. */
+  throughputGpus: number;
   base: number;
   constraint: "Memory" | "Decode" | "Prefill";
-  withHead: number;
-  withAnc: number;
+  /** Base plus scheduling overhead, rounded up to whole replicas. */
   withSched: number;
+  haEnabled: boolean;
   prodGpus: number;
   ttftMs: number;
   ttftPass: boolean;
@@ -28,21 +38,36 @@ export function computeSizing(
   rates: Rates,
   ttftTargetMs: number,
   tpotTargetMs: number,
+  haEnabled = true,
 ): SizingResult {
   const decodeTps = ((gpu.idx * rates.calibK) / model.activeB) * precision.tput;
   const weights = model.totalB * precision.bytes * rates.weightOverhead;
-  const kvTot = (tot.inflightTot * tot.avgTok) / 1000 * model.kv1k;
-  const memGpus = Math.ceil((weights + kvTot) / (gpu.vram * gpu.usable));
-  const decGpus = Math.ceil(tot.decodeTot / (decodeTps * rates.servingEff));
-  const preGpus = Math.ceil(tot.prefillTot / (decodeTps * rates.prefillMult * rates.servingEff));
-  const base = Math.max(memGpus, decGpus, preGpus);
-  const constraint: SizingResult["constraint"] =
-    base === memGpus ? "Memory" : base === decGpus ? "Decode" : "Prefill";
+  const kvTot = ((tot.inflightTot * tot.avgTok) / 1000) * model.kv1k;
 
-  const withHead = Math.ceil(base * (1 + rates.headroom));
-  const withAnc = Math.ceil(withHead * (1 + rates.ancillary));
-  const withSched = Math.ceil(withAnc * (1 + rates.schedOverhead));
-  const prodGpus = withSched + rates.haGpus;
+  // 1. Memory floor: one replica.
+  const replicaGpus = Math.max(1, Math.ceil((weights + kvTot) / (gpu.vram * gpu.usable)));
+
+  // 2. Headroom applied to demand, not to the GPU count.
+  const uplift = 1 + rates.headroom;
+  const decodeDemand = tot.decodeTot * uplift;
+  const prefillDemand = tot.prefillTot * uplift;
+  const decGpus = Math.ceil(decodeDemand / (decodeTps * rates.servingEff));
+  const preGpus = Math.ceil(prefillDemand / (decodeTps * rates.prefillMult * rates.servingEff));
+
+  // 3. Throughput requirement in whole replicas.
+  const throughputRaw = Math.max(decGpus, preGpus);
+  const throughputGpus = ceilTo(throughputRaw, replicaGpus);
+
+  // 4. Base and binding constraint.
+  const base = Math.max(replicaGpus, throughputGpus);
+  const constraint: SizingResult["constraint"] =
+    throughputGpus > replicaGpus ? (decGpus >= preGpus ? "Decode" : "Prefill") : "Memory";
+
+  // 5. Scheduling overhead, the only rounding after base.
+  const withSched = ceilTo(base * (1 + rates.schedOverhead), replicaGpus);
+
+  // 6. HA adds one replica, never one GPU.
+  const prodGpus = withSched + (haEnabled ? replicaGpus : 0);
 
   const ttftMs =
     tot.peakRpsTot > 0 ? (tot.prefillTot / tot.peakRpsTot / (decodeTps * rates.prefillMult)) * 1000 : 0;
@@ -52,14 +77,15 @@ export function computeSizing(
     decodeTps,
     weights,
     kvTot,
-    memGpus,
+    replicaGpus,
+    memGpus: replicaGpus,
     decGpus,
     preGpus,
+    throughputGpus,
     base,
     constraint,
-    withHead,
-    withAnc,
     withSched,
+    haEnabled,
     prodGpus,
     ttftMs,
     ttftPass: ttftMs <= ttftTargetMs,
