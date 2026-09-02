@@ -87,6 +87,8 @@ export function defaultScenario(): Scenario {
     uatPct: 0.35,
     drPct: 1.0,
     drHA: false,
+    haEnabled: true,
+    ancillaryMode: "none",
     virtualisation: true,
     cloudRegions: { ...DEFAULT_REGIONS },
     commercial: { ...DEFAULT_COMMERCIAL },
@@ -104,7 +106,7 @@ export function computeScenario(s: Scenario): ScenarioResult {
     suggestTemplate(gpu.name, TEMPLATES);
 
   const tokens = computeTokens(s.useCases, TASKS, UNITS, rates);
-  const sizing = computeSizing(tokens, model, gpu, precision, rates, s.ttftTargetMs, s.tpotTargetMs);
+  const sizing = computeSizing(tokens, model, gpu, precision, rates, s.ttftTargetMs, s.tpotTargetMs, s.haEnabled ?? true);
   const corpusGB =
     s.corpusGB === undefined || s.corpusGB === null
       ? undefined
@@ -131,6 +133,7 @@ export function computeScenario(s: Scenario): ScenarioResult {
       drPct: s.drPct,
       drHA: s.drHA,
       virtualisation: s.virtualisation,
+      replicaGpus: sizing.replicaGpus,
     },
   );
   const cost = computeCost(
@@ -141,6 +144,7 @@ export function computeScenario(s: Scenario): ScenarioResult {
     checks.fabricRequired,
     tokens,
     s.commercial ?? DEFAULT_COMMERCIAL,
+    s.ancillaryMode ?? "none",
   );
   const cloud = computeCloud(environments, gpu, rates, {
     regions: s.cloudRegions,

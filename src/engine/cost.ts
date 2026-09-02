@@ -1,4 +1,4 @@
-import { DEFAULT_COMMERCIAL, type Commercial, type Gpu, type Rates, type Template } from "./types";
+import { DEFAULT_COMMERCIAL, type AncillaryMode, type Commercial, type Gpu, type Rates, type Template } from "./types";
 import type { EnvironmentsResult } from "./environments";
 
 export interface CostResult {
@@ -6,6 +6,9 @@ export interface CostResult {
   cardsL: number;
   servicesL: number;
   storageL: number;
+  /** Dedicated ancillary-model GPUs (L40S), one per environment. */
+  ancillaryGpus: number;
+  ancillaryL: number;
   hwL: number;
   ethernetL: number;
   fabricL: number;
@@ -39,6 +42,7 @@ export function computeCost(
   fabricRequired: boolean,
   totals: { prefillTot: number; decodeTot: number },
   commercial: Commercial = DEFAULT_COMMERCIAL,
+  ancillaryMode: AncillaryMode = "none",
 ): CostResult {
   const prodNodes = env.envs.find((e) => e.name === "Prod")?.gpuNodes ?? 0;
   const drNodes = env.envs.find((e) => e.name === "DR")?.gpuNodes ?? 0;
@@ -48,7 +52,9 @@ export function computeCost(
   const cardsL = env.totalPhysicalGpus * gpu.cardL;
   const servicesL = env.totalServicesNodes * 14;
   const storageL = env.totalStorageTB * rates.applianceLperTB;
-  const hwL = chassisL + cardsL + servicesL + storageL;
+  const ancillaryGpus = ancillaryMode === "l40s" ? env.envs.length : 0;
+  const ancillaryL = ancillaryGpus * 9;
+  const hwL = chassisL + cardsL + servicesL + storageL + ancillaryL;
   const ethernetL = env.totalNodes * rates.ethPerNodeL;
   const fabricL = fabricRequired
     ? rates.fabricBaseL * (1 + (drNodes > 0 ? 1 : 0)) + rates.fabricPerNodeL * (prodNodes + drNodes)
@@ -58,7 +64,7 @@ export function computeCost(
   const capexL = hwL + ethernetL + fabricL + installL + rates.implOneL + contingencyL;
 
   const powerLyr =
-    ((env.totalGpuNodes * template.watts + env.totalPhysicalGpus * gpu.watts + env.totalServicesNodes * 450) *
+    ((env.totalGpuNodes * template.watts + (env.totalPhysicalGpus * gpu.watts + ancillaryGpus * 500) + env.totalServicesNodes * 450) *
       8760 *
       rates.utilisation *
       rates.tariff) /
@@ -91,6 +97,8 @@ export function computeCost(
     cardsL,
     servicesL,
     storageL,
+    ancillaryGpus,
+    ancillaryL,
     hwL,
     ethernetL,
     fabricL,
